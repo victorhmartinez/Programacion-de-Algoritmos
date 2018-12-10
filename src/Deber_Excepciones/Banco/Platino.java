@@ -10,16 +10,19 @@ package Deber_Excepciones.Banco;
  * @author Usuario
  */
 public class Platino  extends Banco{
+    //Atributo de la clase Platino
     double dineroActual;
-
+    //Cosntructor vacio
     public Platino() {
     }
-
+    //Constructor que recibe parametros
     public Platino(int dineroActual, String nombre, int nroCuenta) {
+        //inicianilizamos en constructor de la clase padre
         super(nombre, nroCuenta);
+         //Inicializamos los atributos de la clase
         this.dineroActual = dineroActual;
     }
-
+    //Metodos especiales set y get para obtener y establecer los valores
     public double getdineroActual() {
         return dineroActual;
     }
@@ -28,6 +31,7 @@ public class Platino  extends Banco{
         this.dineroActual = dineroActual;
     }
 
+    //metodo depositar que recibe parametros de tipo double
     @Override
     public double depositar(double deposita) {
         double deposito=getdineroActual()+deposita;
@@ -36,9 +40,10 @@ public class Platino  extends Banco{
         
         return getdineroActual();
     }
-
+ //metodos retirar que recibe parametos de tipo double
     @Override
     public double retirar(double retira) {
+        //verificamos si la cantidad de dinero sea mayor a la de retirar
          if (getdineroActual()>retira) {
               System.out.println("Retiro con exito");
             double retiro= getdineroActual()-retira;
@@ -52,7 +57,7 @@ public class Platino  extends Banco{
             return getdineroActual();
         }
     }
-
+//Obtenemos el valor del balance actual
     @Override
     public double obtenerBalanceActual() {
            if (getdineroActual()<=0.0) {
@@ -65,8 +70,10 @@ public class Platino  extends Banco{
             
         }
     }
+     //metodos toString
      @Override
     public String toString() {
+        //Devolvermos lo q heredamos de la clase padre + otra cadena
         return  super.toString()+"\nDinero en su cuenta : "+getdineroActual();
     }
     

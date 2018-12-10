@@ -5,11 +5,9 @@
  */
 package Deber_Excepciones.Clase;
 
-/**
- *
- * @author Usuario
- */
+
 public class metodos {
+    //Metodo para generar numero aleatorios
       public  int generaNumeroAleatorio(int minimo, int maximo){
          
         int num=(int)(Math.random()*(minimo-(maximo+1))+(maximo+1));

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Deber_Excepciones.Clase;
 
 /**
@@ -10,18 +6,21 @@ package Deber_Excepciones.Clase;
  * @author Usuario
  */
 public class Aula {
+    //Atributos
     public int indicador;
     public String dedicada;
     public int nuemroMaximo;
-   
-
+    //Constructor Vacio
+    public Aula() {
+    }  
+    //Constructor que recibe parametros
     public Aula(int indicador, String dedicada, int nuemroMaximo) {
         this.indicador = indicador;
         this.dedicada = dedicada;
         this.nuemroMaximo = nuemroMaximo;
      
     }
-
+//Metodos especiales set y get para obtener y establecer los valores
     public int getIndicador() {
         return indicador;
     }
