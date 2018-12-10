@@ -16,7 +16,7 @@ public class Cheques extends Banco{
 
     public Cheques(double dineroActual,String nombre, int nroCuenta) {
         super(nombre, nroCuenta);
-        setdineroActual(dineroActual);
+        this.dineroActual=dineroActual;
         
     }
 
@@ -26,11 +26,8 @@ public class Cheques extends Banco{
 
     public void setdineroActual(double dineroActual) {
         this.dineroActual = dineroActual;
-         if (dineroActual >= 0.0 )
-         this.dineroActual= dineroActual;
-      else
-         throw new IllegalArgumentException(
-            "Su balance  debe ser >= 0.0" );
+         
+      
     }
     
 

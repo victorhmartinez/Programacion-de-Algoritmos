@@ -17,7 +17,7 @@ public class Ahorro extends Banco{
 
     public Ahorro(double dineroActual, String nombre, int nroCuenta) {
         super(nombre, nroCuenta);
-       this.dineroActual=dineroActual;
+        setdineroActual(dineroActual);
     }
 
    
@@ -31,7 +31,12 @@ public class Ahorro extends Banco{
 
     public void setdineroActual(double dineroActual) {
        
-        this.dineroActual = dineroActual;
+            this.dineroActual = dineroActual;
+         if (dineroActual >= 0.0 )
+         this.dineroActual= dineroActual;
+      else
+         throw new IllegalArgumentException(
+            "Su balance  debe ser mayor de 0.0" );
         
     }
      @Override
