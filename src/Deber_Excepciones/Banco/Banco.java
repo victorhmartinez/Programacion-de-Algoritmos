@@ -50,6 +50,4 @@ public abstract class Banco {
     public String toString() {
         return "Cuenta de" + "\nNombre : " + getNombre() + "\n Numero de Cuenta : " + getNroCuenta();
     }
- 
-    
 }

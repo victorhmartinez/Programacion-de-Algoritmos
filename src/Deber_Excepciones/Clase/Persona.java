@@ -69,7 +69,4 @@ public abstract class Persona {
     }
 //Metodo abstracto
     public abstract void disponibilidad();
-
-    
-
 }
