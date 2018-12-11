@@ -5,6 +5,7 @@
  */
 package Deber_Excepciones.Banco;
 
+import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class Prueba {
     public static void main(String[] args) {
         Scanner leer = new Scanner(System.in);
         int cant;
+        
         //Creamos nuestros objetos de tipo banco con las difentes cuentas
         Banco cuentaAho = new Ahorro(15, "juan", 123);
         Banco cuentaCheues = new Cheques(15, "Pedro", 192);
