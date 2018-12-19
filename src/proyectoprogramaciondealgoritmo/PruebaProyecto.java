@@ -6,7 +6,7 @@
 package proyectoprogramaciondealgoritmo;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 
 public class PruebaProyecto {

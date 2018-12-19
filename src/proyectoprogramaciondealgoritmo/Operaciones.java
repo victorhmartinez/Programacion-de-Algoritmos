@@ -1,14 +1,16 @@
-
 package proyectoprogramaciondealgoritmo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+import java.util.Formatter;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
 public class Operaciones {
-
- 
 
     public double caja;
 //Metodo para acceder a las diversas obsiones que tiene nuestro MENU
@@ -21,7 +23,7 @@ public class Operaciones {
             //Caso 1
             case 1:
                 //Si el usuario digita 1 se llama al metod registrarNuevoTrabajador
-                registarNuevoTrabajador(personal);
+                //registarNuevoTrabajador(personal);
                 break;
             case 2:
                 // Si el usuario digita 2 se llama al metodo mostrarProductos 
@@ -76,7 +78,7 @@ public class Operaciones {
         String tipo = JOptionPane.showInputDialog(null, "Especial ---> 10% de Descuento\nNormal ---> Sin descuento");
         String celular = JOptionPane.showInputDialog(null, "Ingrese el numero de celular");
         //Añadimos a nuestro arralyst un cliente nuevo con los parametros  que se pidieron anteriormente
-        personal.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
+        //personal.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
     }
 //Metodo para mostrar los clientes registrados  que recibe como parametro un arrayList de tipo Personal
 
@@ -119,6 +121,24 @@ public class Operaciones {
         double sueldo = Double.parseDouble(JOptionPane.showInputDialog(null, "ingrese el sueldo"));
         //Añadimos a nuestro arralyst un empleado  nuevo con los parametros  que se pidieron anteriormente
         personal.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
+        Formatter archivo;
+        try {
+            archivo = new Formatter("Registro_Empleados.csv");
+            for (int i = 0; i < personal.size(); i++) {
+                Personal pers= personal.get(i);
+                if (pers instanceof Empleado) {
+                    archivo.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", personal.get(i).getNombre(),personal.get(i).getApellido(),
+                       personal.get(i).getCedula(),personal.get(i).getCorreo(),personal.get(i).getTelefono(),
+                       personal.get(i).getNumCelular(),((Empleado) pers).getCargo(),((Empleado) pers).getSalario()); 
+                }
+                
+            }
+            archivo.close();           
+            JOptionPane.showMessageDialog(null, "Empleado registrado correctamente");
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "No se Encontror el registro", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        //personal.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
     }
 // metodo para mostrar el nombre del personal registrado
 
@@ -145,6 +165,7 @@ public class Operaciones {
         }
 
     }
+    
 //Metodo  para mostar los productos
 
     public void mostarProductos(ArrayList<Producto> productos) {
@@ -182,7 +203,7 @@ public class Operaciones {
             //Pedimo al usurio  q ingrese una opcion mediante un JOptionPane
             //Como los JOPtinePane  devuelve un valor tipo canedan tranaformamos a entero 
             op = Integer.parseInt(JOptionPane.showInputDialog(null, ms));
-        } while (op >productos.size());//Comparamos q la opcion  sea mayor que el tamño del arreglo entre en el 
+        } while (op > productos.size());//Comparamos q la opcion  sea mayor que el tamño del arreglo entre en el 
         //Devolvemos el valor de op
         return op;
     }
@@ -316,6 +337,7 @@ public class Operaciones {
             return productos.get(respuesta - 1).getPrecioUnit();
         }
     }
+
     //metodo para mostarSalrio
     public void mostraSalario(ArrayList<Personal> personal) {
         String sal = " ";
@@ -327,4 +349,6 @@ public class Operaciones {
         }
         JOptionPane.showMessageDialog(null, sal);
     }
+
+  
 }
