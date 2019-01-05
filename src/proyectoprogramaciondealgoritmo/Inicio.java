@@ -1,4 +1,3 @@
-
 package proyectoprogramaciondealgoritmo;
 
 import java.io.File;
@@ -13,64 +12,86 @@ public class Inicio extends javax.swing.JFrame {
     Operaciones op = new Operaciones();
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
-    public void crearRegistros(){
-         Formatter archivoPers , archivoClientes;
+
+    public void crearRegistros() {
+        Formatter archivoPers, archivoClientes;
         try {
             archivoPers = new Formatter("Registro_Empleados.csv");
-            archivoClientes= new Formatter("Registro_Cliente.csv");
+            archivoClientes = new Formatter("Registro_Cliente.csv");
             for (int i = 0; i < PersonalEmp.size(); i++) {
-                Personal pers= PersonalEmp.get(i);
+                Personal pers = PersonalEmp.get(i);
                 if (pers instanceof Empleado) {
-                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", PersonalEmp.get(i).getNombre(),PersonalEmp.get(i).getApellido(),
-                       PersonalEmp.get(i).getCedula(),PersonalEmp.get(i).getCorreo(),PersonalEmp.get(i).getTelefono(),
-                       PersonalEmp.get(i).getNumCelular(),((Empleado) pers).getCargo(),((Empleado) pers).getSalario()); 
-                }else if(pers instanceof Cliente){
-                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n",PersonalEmp.get(i).getNombre(),PersonalEmp.get(i).getApellido(),
-                       PersonalEmp.get(i).getCedula(),PersonalEmp.get(i).getCorreo(),PersonalEmp.get(i).getTelefono(),
-                       PersonalEmp.get(i).getNumCelular(),((Cliente) pers).getTipo());                  
-                }              
+                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
+                            PersonalEmp.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
+                } else if (pers instanceof Cliente) {
+                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
+                            PersonalEmp.get(i).getNumCelular(), ((Cliente) pers).getTipo());
+                }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
             archivoClientes.close();
-            archivoPers.close();           
-           
+            archivoPers.close();
+
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se Encontror el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public void cargarRegistros(){
-     
+
+    public void cargarRegistros() {
+
         Scanner cargaArchivo;
-        String linea = null,nombre,apellido, cedula,telefono,correo,cargo,celular;
+        String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo,celular;
         double sueldo;
+        int cant = 0;
         try {
-         
+
             cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
-           
-            while(cargaArchivo.hasNext()){
-                 linea = cargaArchivo.nextLine();
+
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
-                nombre=tokens[0];
-                apellido=tokens[1];
-                cedula=tokens[2];
-                correo=tokens[3];
-                telefono=tokens[4];
-                celular=tokens[5];
-                cargo=tokens[6];
-                sueldo= Double.parseDouble(tokens[7]);
+                nombre = tokens[0];
+                apellido = tokens[1];
+                cedula = tokens[2];
+                correo = tokens[3];
+                telefono = tokens[4];
+                celular = tokens[5];
+                cargo = tokens[6];
+                sueldo = Double.parseDouble(tokens[7]);
+
                 PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
+            }
+            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+            
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                nombre = tokens[0];
+                apellido = tokens[1];
+                cedula = tokens[2];
+                correo = tokens[3];
+                telefono = tokens[4];
+                celular = tokens[5];
+                tipo= tokens[6];
+                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
             }
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null,"Error archivo no encontrado","Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+ 
     public Inicio() {
         initComponents();
+        this.setLocationRelativeTo(null);
         cargarRegistros();
+       
     }
 
-   
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -116,6 +137,11 @@ public class Inicio extends javax.swing.JFrame {
 
         btnMosEmpleados.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMosEmpleados.setText("MOSTRAR EMPLEADOS");
+        btnMosEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMosEmpleadosActionPerformed(evt);
+            }
+        });
 
         btnMosClientes.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMosClientes.setText("MOSTRAR CLIENTES");
@@ -203,12 +229,17 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInNuevoCienteActionPerformed
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-       int opcion = op.mostrarNombreProductos(catalogo);
-       //Se pide al usuario que ingrese la cantidad  del producto que desee
-               int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la  Cantidad que desea del Producto"));
-                //Se llama al metodo venerProducto.
-                op.venderProducto(catalogo, opcion, cantidad);
+        int opcion = op.mostrarNombreProductos(catalogo);
+        //Se pide al usuario que ingrese la cantidad  del producto que desee
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la  Cantidad que desea del Producto"));
+        //Se llama al metodo venerProducto.
+        op.venderProducto(catalogo, opcion, cantidad);
     }//GEN-LAST:event_btnVenderActionPerformed
+
+    private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed
+       Mostrar_Personal mPersonal = new Mostrar_Personal();
+       mPersonal.setVisible(true);
+    }//GEN-LAST:event_btnMosEmpleadosActionPerformed
 
     /**
      * @param args the command line arguments

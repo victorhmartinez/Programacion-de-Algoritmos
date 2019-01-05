@@ -23,7 +23,7 @@ public class Operaciones {
             //Caso 1
             case 1:
                 //Si el usuario digita 1 se llama al metod registrarNuevoTrabajador
-                //registarNuevoTrabajador(personal);
+                registarNuevoTrabajador(personal);
                 break;
             case 2:
                 // Si el usuario digita 2 se llama al metodo mostrarProductos 
