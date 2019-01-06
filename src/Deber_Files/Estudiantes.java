@@ -10,6 +10,7 @@ package Deber_Files;
  * @author Usuario
  */
 public class Estudiantes {
+    //Atributos de las Nomina de estudiantes
     public String nombrEst;
     public double foro1;
     public double chat1;
@@ -26,13 +27,14 @@ public class Estudiantes {
     public double total;
     public String alerta;
     public String Promocion;
-
+    //Construcutor Basico
     public Estudiantes() {
     }
-
+    //Constructor que recibe parametros 
     public Estudiantes(String nombrEst, double foro1, double chat1, double vid1, double tra1, double pre1, double foro2, 
             double chat2, double vid2, double tra2, double pre2, double fin1, double fin2, double total,
             String alerta, String Promocion) {
+        //Inicianilizamos cada uno de los atibutos
         this.nombrEst = nombrEst;
         this.foro1 = foro1;
         this.chat1 = chat1;
@@ -50,7 +52,7 @@ public class Estudiantes {
         this.alerta = alerta;
         this.Promocion = Promocion;
     }
-
+    //Metodos especiales para obtener y establecer los atributos set y get
     public String getNombrEst() {
         return nombrEst;
     }
