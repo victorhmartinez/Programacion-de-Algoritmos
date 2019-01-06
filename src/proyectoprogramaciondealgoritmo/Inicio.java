@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public class Inicio extends javax.swing.JFrame {
 
     Operaciones op = new Operaciones();
-    public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
+    public static ArrayList<Personal> nomina = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
 
     public void crearRegistros() {
@@ -18,16 +18,16 @@ public class Inicio extends javax.swing.JFrame {
         try {
             archivoPers = new Formatter("Registro_Empleados.csv");
             archivoClientes = new Formatter("Registro_Cliente.csv");
-            for (int i = 0; i < PersonalEmp.size(); i++) {
-                Personal pers = PersonalEmp.get(i);
+            for (int i = 0; i < nomina.size(); i++) {
+                Personal pers = nomina.get(i);
                 if (pers instanceof Empleado) {
-                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
-                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
-                            PersonalEmp.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
+                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", nomina.get(i).getNombre(), nomina.get(i).getApellido(),
+                            nomina.get(i).getCedula(), nomina.get(i).getCorreo(), nomina.get(i).getTelefono(),
+                            nomina.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
                 } else if (pers instanceof Cliente) {
-                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
-                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
-                            PersonalEmp.get(i).getNumCelular(), ((Cliente) pers).getTipo());
+                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", nomina.get(i).getNombre(), nomina.get(i).getApellido(),
+                            nomina.get(i).getCedula(), nomina.get(i).getCorreo(), nomina.get(i).getTelefono(),
+                            nomina.get(i).getNumCelular(), ((Cliente) pers).getTipo());
                 }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
@@ -61,7 +61,7 @@ public class Inicio extends javax.swing.JFrame {
                 cargo = tokens[6];
                 sueldo = Double.parseDouble(tokens[7]);
 
-                PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
+                nomina.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
             }
             cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
             
@@ -75,7 +75,7 @@ public class Inicio extends javax.swing.JFrame {
                 telefono = tokens[4];
                 celular = tokens[5];
                 tipo= tokens[6];
-                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
+                nomina.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
             }
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
@@ -219,12 +219,12 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarEmpleadoActionPerformed
-        op.registarNuevoTrabajador(PersonalEmp);
+        op.registarNuevoTrabajador(nomina);
         crearRegistros();
     }//GEN-LAST:event_btnIngresarEmpleadoActionPerformed
 
     private void btnInNuevoCienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInNuevoCienteActionPerformed
-        op.registrarCliente(PersonalEmp);
+        op.registrarCliente(nomina);
         crearRegistros();
     }//GEN-LAST:event_btnInNuevoCienteActionPerformed
 

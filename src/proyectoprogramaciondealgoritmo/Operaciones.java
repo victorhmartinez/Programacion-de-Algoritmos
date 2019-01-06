@@ -1,12 +1,6 @@
 package proyectoprogramaciondealgoritmo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -296,6 +290,7 @@ public class Operaciones {
                     presActual = productos.get(respuesta - 1).getPrecioUnit() + preciosD[opcion - 1];
                     productos.get(respuesta - 1).setPrecioUnit(presActual + precioProce[opcion - 1]);
                     //switch  comparamos que tipos de procesadores ofrece que  desea cambiar
+                  
                     switch (((Computadoras) catalogo).getProcesador()) {
                         case 3:
                             presActual = presActual - 200;

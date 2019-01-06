@@ -21,28 +21,13 @@ import javax.swing.table.DefaultTableModel;
 public class Mostrar_Personal extends javax.swing.JFrame {
 
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
-
-    public int cantidadRegistros() {
-        Scanner cargaArchivo;
-        int cant = 0;
-        try {
-            cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
-            while (cargaArchivo.hasNext()) {
-                cant++;
-            }
-            cargaArchivo.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("error");
-        }
-        System.out.println(cant);
-        return cant;
-    }
-
+   
     public void cargarRegistros() {
 
         Scanner cargaArchivo;
         String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo, celular;
         double sueldo;
+        
 
         try {
 
@@ -59,30 +44,17 @@ public class Mostrar_Personal extends javax.swing.JFrame {
                 celular = tokens[5];
                 cargo = tokens[6];
                 sueldo = Double.parseDouble(tokens[7]);
-
+              
                 PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
             }
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
-
-            while (cargaArchivo.hasNext()) {
-                linea = cargaArchivo.nextLine();
-                String[] tokens = linea.split(",");
-                nombre = tokens[0];
-                apellido = tokens[1];
-                cedula = tokens[2];
-                correo = tokens[3];
-                telefono = tokens[4];
-                celular = tokens[5];
-                tipo = tokens[6];
-                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
-            }
-            cargaArchivo.close();
+         
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public void llenarTabla() {
+        
         DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Nombre");
         dtm.addColumn("Apellido");
@@ -157,15 +129,21 @@ public class Mostrar_Personal extends javax.swing.JFrame {
 
         tablaPersonal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Nombre", "Apellido", "Correo", "Cedula", "Celular", "Telefono", "Sueldo", "Cargo"
+
             }
         ));
+        tablaPersonal.setEnabled(false);
+        tablaPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaPersonalMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaPersonal);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 340, 1071, 193));
@@ -262,8 +240,21 @@ public class Mostrar_Personal extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         // TODO add your handling code here:
-        cantidadRegistros();
+        
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void tablaPersonalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPersonalMouseClicked
+        // TODO add your handling code here:
+        int selection = tablaPersonal.rowAtPoint(evt.getPoint());
+        txtNombre.setText(String.valueOf(tablaPersonal.getValueAt(selection, 0)));
+        txtaApellido.setText(String.valueOf(tablaPersonal.getValueAt(selection, 1)));
+        txtCedula.setText(String.valueOf(tablaPersonal.getValueAt(selection, 2)));
+        txtCorreo.setText(String.valueOf(tablaPersonal.getValueAt(selection, 3)));
+        txtCelular.setText(String.valueOf(tablaPersonal.getValueAt(selection, 4)));
+        txtTelefono.setText(String.valueOf(tablaPersonal.getValueAt(selection, 5)));
+        txtCargo.setText(String.valueOf(tablaPersonal.getValueAt(selection, 6)));
+        txtSalrio.setText(String.valueOf(tablaPersonal.getValueAt(selection, 7)));
+    }//GEN-LAST:event_tablaPersonalMouseClicked
 
     /**
      * @param args the command line arguments
