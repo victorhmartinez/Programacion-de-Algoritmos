@@ -19,7 +19,7 @@ public class Metodos {
             for (int i = 0; i < (int) (Math.random() * 20) + 1; i++) {
                 //con el metodo format creamos el espacio de los que va tener nuestro archivo
                 //Usamos el metodo random de la clase Math para generar las notas del estudiantes
-                nominaEstu.format("%s,%.1f,%.1f,%.1f,%.2f,%.2f,%.1f,%.1f,%.1f,%.2f,%.2f\r\n", "Estudiante " + (i + 1),
+                nominaEstu.format("%s;%.1f;%.1f;%.1f;%.2f;%.2f;%.1f;%.1f;%.1f;%.2f;%.2f\r\n", "Estudiante " + (i + 1),
                         Math.random() * 1, Math.random() * 1, Math.random() * 1, (Math.random() * 6), (Math.random() * 14), +Math.random() * 1,
                         Math.random() * 1, Math.random() * 1, (Math.random() * 6), (Math.random() * 14));
                 cant++;
@@ -50,7 +50,7 @@ public class Metodos {
                 //En una variable tipo String almacenamos la linea del archivo
                 linea = leeNomina.nextLine();
                 //Con un arreglo de tipo String
-                String[] tokens = linea.split(",");
+                String[] tokens = linea.split(";");
                 //Cada una de nuestras variables le asignamos cada una parte de las lineas 
                 nombre = tokens[0];
                 foro1 = Double.parseDouble(tokens[1]);
@@ -159,10 +159,10 @@ public class Metodos {
         Formatter guardarNomina;
         try {
             guardarNomina = new Formatter("Resgistro_Estudiante.csv");
-            guardarNomina.format("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n", "Nombres", "Foro 1", "Chat 1", "Vid 1", "Tra 1", "Pre1",
+            guardarNomina.format("%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s\r\n", "Nombres", "Foro 1", "Chat 1", "Vid 1", "Tra 1", "Pre1",
                     "Foro 2", "Chat 2", "Vid 2", "Tra 2", "Pre 2", "Fin 1", "Fin 2", "Total", "Alerta", "Promocion");
             for (int i = 0; i < nomina.size(); i++) {
-                guardarNomina.format("%s,%.1f,%.1f,%.1f,%.2f,%.2f,%.1f,%.1f,%.1f,%.2f,%.2f,%.2f,%.2f,%.2f,%s,%s\r\n", nomina.get(i).getNombrEst(), nomina.get(i).getForo1(),
+                guardarNomina.format("%s;%.1f;%.1f;%.1f;%.2f;%.2f;%.1f;%.1f;%.1f;%.2f;%.2f;%.2f;%.2f;%.2f;%s;%s\r\n", nomina.get(i).getNombrEst(), nomina.get(i).getForo1(),
                         nomina.get(i).getChat1(), nomina.get(i).getVid1(), nomina.get(i).getTra1(), nomina.get(i).getPre1(), nomina.get(i).getForo2(),
                         nomina.get(i).getChat2(), nomina.get(i).getVid2(), nomina.get(i).getTra2(), nomina.get(i).getPre2(), nomina.get(i).getFin1(), nomina.get(i).getFin2(),
                         nomina.get(i).getTotal(), nomina.get(i).getAlerta(), nomina.get(i).getPromocion());

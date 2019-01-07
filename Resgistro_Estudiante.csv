@@ -1,5 +1,7 @@
-Nombres,Foro 1,Chat 1,Vid 1,Tra 1,Pre1,Foro 2,Chat 2,Vid 2,Tra 2,Pre 2,Fin 1,Fin 2,Total,Alerta,Promocion
-Estudiante 1,0.2,0.1,0.2,4.65,2.80,0.1,0.3,0.6,0.76,6.81,2.95,11.19,14.13,Dar final 1 y 2,REPROBADO
-Estudiante 2,0.1,0.3,0.6,0.42,3.18,0.7,0.0,0.8,1.95,13.19,13.30,0.00,29.94,Dar final 1,APROBADO
-Estudiante 3,0.2,0.8,0.4,2.06,6.24,0.1,0.7,0.7,1.81,14.00,5.18,0.00,22.49,Dar final 1,REPROBADO
-Estudiante 4,0.5,0.4,0.7,0.54,0.37,0.1,0.3,0.3,2.01,0.67,18.84,5.93,24.77,Dar final 1 y 2,REPROBADO
+Nombres;Foro 1;Chat 1;Vid 1;Tra 1;Pre1;Foro 2;Chat 2;Vid 2;Tra 2;Pre 2;Fin 1;Fin 2;Total;Alerta;Promocion
+Estudiante 1;0.1;0.1;0.1;4.91;1.59;0.3;0.7;0.3;0.12;7.53;10.83;5.51;16.34;Dar final 1 y 2;REPROBADO
+Estudiante 2;1.0;0.3;0.2;0.27;7.28;0.5;0.5;0.2;4.90;5.90;1.97;14.99;16.97;Dar final 1 y 2;REPROBADO
+Estudiante 3;0.7;0.3;0.8;3.31;7.32;0.4;0.1;0.5;4.03;1.77;18.25;16.46;34.71;Dar final 1 y 2;APROBADO
+Estudiante 4;0.2;1.0;0.2;0.81;12.57;0.6;0.5;0.4;3.57;9.61;0.00;0.00;29.26;No tiene que dar final;APROBADO
+Estudiante 5;0.9;1.0;0.1;2.65;4.47;0.0;0.5;0.8;0.83;0.44;5.99;14.33;20.33;Dar final 1 y 2;REPROBADO
+Estudiante 6;1.0;0.6;0.7;5.32;13.50;0.5;0.3;0.8;4.45;10.49;0.00;0.00;37.56;No tiene que dar final;APROBADO

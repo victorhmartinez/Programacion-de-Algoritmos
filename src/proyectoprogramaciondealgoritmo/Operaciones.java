@@ -53,7 +53,7 @@ public class Operaciones {
                 break;
             case 8:
                 // Si el usuario digita 8 se llama al metodo mostrarSalario
-                mostraSalario(personal);
+
                 break;
             //En caso que digite un numero mayor de las opciones
             default:
@@ -141,9 +141,8 @@ public class Operaciones {
         }
 
     }
-    
-//Metodo  para mostar los productos
 
+//Metodo  para mostar los productos
     public void mostarProductos(ArrayList<Producto> productos) {
         // Creamos un variable tipo String  para almacanar todos los datos en una sola cadena
         String ms = "";
@@ -290,7 +289,7 @@ public class Operaciones {
                     presActual = productos.get(respuesta - 1).getPrecioUnit() + preciosD[opcion - 1];
                     productos.get(respuesta - 1).setPrecioUnit(presActual + precioProce[opcion - 1]);
                     //switch  comparamos que tipos de procesadores ofrece que  desea cambiar
-                  
+
                     switch (((Computadoras) catalogo).getProcesador()) {
                         case 3:
                             presActual = presActual - 200;
@@ -316,16 +315,29 @@ public class Operaciones {
     }
 
     //metodo para mostarSalrio
-    public void mostraSalario(ArrayList<Personal> personal) {
-        String sal = " ";
-        for (Personal salarios : personal) {
-            if (salarios instanceof Empleado) {
-                sal = sal + ("Nombre: " + salarios.getNombre() + " Apellido:" + salarios.getApellido()
-                        + " Cargo:" + ((Empleado) salarios).getCargo() + " Salario:" + ((Empleado) salarios).getSalario());
-            }
+    public void registrarProductos(ArrayList<Producto> catalogo) {
+        String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre del producto");
+        int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad del producto"));
+        double precio = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrse el precio del producto"));
+        int op;
+        do {
+            op = Integer.parseInt(JOptionPane.showInputDialog(null, "1.Disponible\n2.No disponible"));
+        } while (op > 2);
+        boolean dispo;
+        dispo = op == 1;
+        int pro;
+        pro = Integer.parseInt(JOptionPane.showInputDialog(null, "Desea registrar  \n1.Computadora\n2.Videojuegos"));
+        if (pro == 1) {
+            int ram = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la memoria Ram"));
+            String sistemaO=JOptionPane.showInputDialog(null, "Ingrese el Sistema Operativo");
+            int Disco=Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el tamaño del disco"));
+            String marca= JOptionPane.showInputDialog(null, "Ingrse la marca del computador");
+            int procesador=Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el procesador"));
+            catalogo.add(new Computadoras(ram, sistemaO, Disco, marca, procesador, nombre, precio, cantidad, dispo));
+        }else{
+            String categoria = JOptionPane.showInputDialog(null, "Ingrese la categoria del videojuego");
+            catalogo.add(new VideoJuegos(categoria, nombre, precio, cantidad, dispo));
         }
-        JOptionPane.showMessageDialog(null, sal);
     }
 
-  
 }

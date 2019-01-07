@@ -14,13 +14,14 @@ public class Computadoras extends Producto{
     public int ram;
     public  String sistemaO;
     public int Disco;
+
     public String marca;
     public int procesador;
     //Constructor sin parametros
     public Computadoras() {
     }
     //Constructor q resive parametros
-    public Computadoras(int ram, String sistemaO, int Disco, String marca, int procesador, 
+    public Computadoras(int ram, String sistemaO, int Disco, String marca,int procesador, 
                          String nombre, double precioUnit, int cantStock, boolean disponible) {
         //LLamamos al constructor de la calse padre
         super(nombre, precioUnit, cantStock, disponible);

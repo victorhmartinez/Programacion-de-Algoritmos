@@ -7,38 +7,52 @@ import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
+
 public class Inicio extends javax.swing.JFrame {
 
     Operaciones op = new Operaciones();
-    public static ArrayList<Personal> nomina = new ArrayList<Personal>();
+    public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
 
     public void crearRegistros() {
-        Formatter archivoPers, archivoClientes;
+        Formatter archivoPers, archivoClientes,archivoProductos;
         try {
             archivoPers = new Formatter("Registro_Empleados.csv");
             archivoClientes = new Formatter("Registro_Cliente.csv");
-            for (int i = 0; i < nomina.size(); i++) {
-                Personal pers = nomina.get(i);
+            for (int i = 0; i < PersonalEmp.size(); i++) {
+                Personal pers = PersonalEmp.get(i);
                 if (pers instanceof Empleado) {
-                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", nomina.get(i).getNombre(), nomina.get(i).getApellido(),
-                            nomina.get(i).getCedula(), nomina.get(i).getCorreo(), nomina.get(i).getTelefono(),
-                            nomina.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
+                    archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
+                            PersonalEmp.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
                 } else if (pers instanceof Cliente) {
-                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", nomina.get(i).getNombre(), nomina.get(i).getApellido(),
-                            nomina.get(i).getCedula(), nomina.get(i).getCorreo(), nomina.get(i).getTelefono(),
-                            nomina.get(i).getNumCelular(), ((Cliente) pers).getTipo());
+                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
+                            PersonalEmp.get(i).getNumCelular(), ((Cliente) pers).getTipo());
                 }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
             archivoClientes.close();
             archivoPers.close();
+            archivoProductos =new Formatter("Registro_Productos.csv");
+            for (int i = 0; i < catalogo.size(); i++) {
+                Producto prod = catalogo.get(i);
+                if (prod instanceof Computadoras){
+                    archivoProductos.format("%s,%f,%d,&s,%d,%s,%d,%s,%d",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
+                            catalogo.get(i).isDisponible(),((Computadoras) prod).getRam(),((Computadoras) prod).getSistemaO(),((Computadoras) prod).getDisco(),((Computadoras) prod).getMarca(),
+                            ((Computadoras) prod).getProcesador());
+                }else if (prod instanceof VideoJuegos) {
+                    archivoProductos.format("%s,%f,%d,&s,%s",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),catalogo.get(i).isDisponible(),
+                            ((VideoJuegos) prod).getCategoria());
+                }
+            }
+            archivoProductos.close();
 
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se Encontror el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+ 
     public void cargarRegistros() {
 
         Scanner cargaArchivo;
@@ -61,7 +75,7 @@ public class Inicio extends javax.swing.JFrame {
                 cargo = tokens[6];
                 sueldo = Double.parseDouble(tokens[7]);
 
-                nomina.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
+                PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
             }
             cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
             
@@ -75,8 +89,27 @@ public class Inicio extends javax.swing.JFrame {
                 telefono = tokens[4];
                 celular = tokens[5];
                 tipo= tokens[6];
-                nomina.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
+                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
+                
             }
+           /* int cantidad,ram,disco,procesador;
+            double precioU;
+            boolean disponibilidad;
+            cargaArchivo= new Scanner(new File("Registro_Productos.csv"));
+            while(cargaArchivo.hasNext()){
+                 linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                nombre=tokens[1];
+                cantidad=Integer.parseInt(tokens[2]);
+                precioU=Double.parseDouble(tokens[3]);
+                disponibilidad= Boolean.parseBoolean(tokens[4]);
+                ram=Integer.parseInt(tokens[5]);
+                disco = Integer.parseInt(tokens[6]);
+                procesador= Integer.parseInt(tokens[7]);
+                
+                
+                
+            }*/
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
@@ -88,13 +121,16 @@ public class Inicio extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         cargarRegistros();
-       
+         
     }
 
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        prueba = new javax.swing.JDialog();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaPersonal = new javax.swing.JTable();
         panelFondo = new javax.swing.JPanel();
         btnIngresarEmpleado = new javax.swing.JButton();
         btnInNuevoCiente = new javax.swing.JButton();
@@ -106,6 +142,36 @@ public class Inicio extends javax.swing.JFrame {
         btnValorCaja = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
+
+        tablaPersonal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaPersonal);
+
+        javax.swing.GroupLayout pruebaLayout = new javax.swing.GroupLayout(prueba.getContentPane());
+        prueba.getContentPane().setLayout(pruebaLayout);
+        pruebaLayout.setHorizontalGroup(
+            pruebaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pruebaLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        pruebaLayout.setVerticalGroup(
+            pruebaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pruebaLayout.createSequentialGroup()
+                .addContainerGap(126, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("---- SISTEMA DE VENTAS -----");
@@ -131,9 +197,19 @@ public class Inicio extends javax.swing.JFrame {
 
         btnRegisProducto.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnRegisProducto.setText("REGISTRAR PRODUCTOS");
+        btnRegisProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisProductoActionPerformed(evt);
+            }
+        });
 
         btnMosProducto.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMosProducto.setText("MOSTRAR PRODUCTOS");
+        btnMosProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMosProductoActionPerformed(evt);
+            }
+        });
 
         btnMosEmpleados.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMosEmpleados.setText("MOSTRAR EMPLEADOS");
@@ -145,6 +221,11 @@ public class Inicio extends javax.swing.JFrame {
 
         btnMosClientes.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMosClientes.setText("MOSTRAR CLIENTES");
+        btnMosClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMosClientesActionPerformed(evt);
+            }
+        });
 
         btnVender.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnVender.setText("REALIZAR UNA VENTA");
@@ -219,12 +300,12 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarEmpleadoActionPerformed
-        op.registarNuevoTrabajador(nomina);
+        op.registarNuevoTrabajador(PersonalEmp);
         crearRegistros();
     }//GEN-LAST:event_btnIngresarEmpleadoActionPerformed
 
     private void btnInNuevoCienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInNuevoCienteActionPerformed
-        op.registrarCliente(nomina);
+        op.registrarCliente(PersonalEmp);
         crearRegistros();
     }//GEN-LAST:event_btnInNuevoCienteActionPerformed
 
@@ -239,7 +320,25 @@ public class Inicio extends javax.swing.JFrame {
     private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed
        Mostrar_Personal mPersonal = new Mostrar_Personal();
        mPersonal.setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_btnMosEmpleadosActionPerformed
+
+    private void btnMosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosClientesActionPerformed
+       Mostrar_Cliente mc = new Mostrar_Cliente();
+       mc.setVisible(true);
+       this.dispose();
+       
+    }//GEN-LAST:event_btnMosClientesActionPerformed
+
+    private void btnMosProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosProductoActionPerformed
+      
+        
+    }//GEN-LAST:event_btnMosProductoActionPerformed
+
+    private void btnRegisProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisProductoActionPerformed
+       op.registrarProductos(catalogo);
+       crearRegistros();
+    }//GEN-LAST:event_btnRegisProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -285,8 +384,11 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton btnRegisProducto;
     private javax.swing.JButton btnValorCaja;
     private javax.swing.JButton btnVender;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel panelFondo;
+    private javax.swing.JDialog prueba;
+    private javax.swing.JTable tablaPersonal;
     // End of variables declaration//GEN-END:variables
 }

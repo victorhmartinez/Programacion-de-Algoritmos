@@ -7,7 +7,7 @@ public class Producto {
 	private double precioUnit;
 	private int cantStock;
 	private boolean disponible = false;
-	public static int dimensioArray;
+	
 
 	// Constructor vacio
 	public Producto() {
@@ -20,7 +20,7 @@ public class Producto {
 		this.cantStock = cantStock;
 		this.disponible = disponible;
 
-		dimensioArray++;
+		
 	}
 
 	//Metodos especiales  get and set

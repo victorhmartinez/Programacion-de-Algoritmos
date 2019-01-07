@@ -5,17 +5,87 @@
  */
 package proyectoprogramaciondealgoritmo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
  */
 public class Mostrar_Cliente extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Mostrar_Personal
-     */
+    public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
+
+    public void cargarRegistros() {
+
+        Scanner cargaArchivo;
+        String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo, celular;
+        double sueldo;
+
+        try {
+            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                nombre = tokens[0];
+                apellido = tokens[1];
+                cedula = tokens[2];
+                correo = tokens[3];
+                telefono = tokens[4];
+                celular = tokens[5];
+                tipo = tokens[6];
+                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
+            }
+            cargaArchivo.close();
+
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void llenarTabla() {
+
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.addColumn("Nombre");
+        dtm.addColumn("Apellido");
+        dtm.addColumn("Cedula");
+        dtm.addColumn("Correo");
+        dtm.addColumn("Celular");
+        dtm.addColumn("Telefono");
+        dtm.addColumn("Tipo");
+
+        Object fila[] = new Object[dtm.getColumnCount()];
+
+        for (int i = 0; i < PersonalEmp.size(); i++) {
+            Personal pers = PersonalEmp.get(i);
+            if (pers instanceof Cliente) {
+                fila[0] = PersonalEmp.get(i).getNombre();
+                fila[1] = PersonalEmp.get(i).getApellido();
+                fila[2] = PersonalEmp.get(i).getCedula();
+                fila[3] = PersonalEmp.get(i).getCorreo();
+                fila[4] = PersonalEmp.get(i).getNumCelular();
+                fila[5] = PersonalEmp.get(i).getTelefono();
+                fila[6] = ((Cliente) pers).getTipo();
+
+            }
+
+            dtm.addRow(fila);
+        }
+        tablaClientes.setModel(dtm);
+
+    }
+
     public Mostrar_Cliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
+      
+        cargarRegistros();
+        llenarTabla();
     }
 
     /**
@@ -29,7 +99,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaClientes = new javax.swing.JTable();
         lblApellido = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         lblCorreo = new javax.swing.JLabel();
@@ -49,24 +119,23 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaClientes);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 323, 1071, 210));
 
@@ -137,6 +206,11 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
         btnVolver.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnVolver.setText("VOLVER");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVolverActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnVolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 546, 130, 36));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1170, 600));
@@ -146,6 +220,12 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        Inicio in = new Inicio();
+        in.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,7 +270,6 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblApellido;
     private javax.swing.JLabel lblCedula;
     private javax.swing.JLabel lblCelular;
@@ -198,6 +277,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTelefono;
     private javax.swing.JLabel lblTipo;
+    private javax.swing.JTable tablaClientes;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtCorreo;
