@@ -22,9 +22,9 @@ public class Computadoras extends Producto{
     }
     //Constructor q resive parametros
     public Computadoras(int ram, String sistemaO, int Disco, String marca,int procesador, 
-                         String nombre, double precioUnit, int cantStock, boolean disponible) {
+                         String nombre, double precioUnit, int cantStock) {
         //LLamamos al constructor de la calse padre
-        super(nombre, precioUnit, cantStock, disponible);
+        super(nombre, precioUnit, cantStock);
         //Inicializamos los atriubutos
         this.ram = ram;
         this.sistemaO = sistemaO;

@@ -9,9 +9,9 @@ public class VideoJuegos extends Producto{
     public VideoJuegos() {
     }
     //Creamos constructor que recibe parametros
-    public VideoJuegos(String categoria, String nombre, double precioUnit, int cantStock, boolean disponible) {
+    public VideoJuegos(String categoria, String nombre, double precioUnit, int cantStock) {
         //Heredamos los parametros de la clase parametros
-        super(nombre, precioUnit, cantStock, disponible);
+        super(nombre, precioUnit, cantStock);
         // Inicianilizamos  los parametros
         this.categoria = categoria;
     }

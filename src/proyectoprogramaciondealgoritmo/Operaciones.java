@@ -189,7 +189,7 @@ public class Operaciones {
         // Creamos una variable tipo producto y le asignamos el valor del una posicion del arreglo
         Producto catalogo = productos.get(respuesta - 1);
         //Usamos un if para controla el producto en la  posicion que ingreso el usuario  este disponible
-        if (productos.get(respuesta - 1).isDisponible()) {
+    
             /*con un if anidado verifiamos q si nuestra variable de tipo producto este instanciando a la clase computadora
              y que  la canitidad en stock del  producto seleccionado sea mayor igual q la cantida pedida */
             if (catalogo instanceof Computadoras && productos.get(respuesta - 1).getCantStock() >= cantidadP) {
@@ -212,9 +212,7 @@ public class Operaciones {
                 JOptionPane.showMessageDialog(null, "No hay cantidad suficiente del produto");
             }
 
-        } else {// esn caso q no se cumpla el primer si
-            JOptionPane.showMessageDialog(null, "No hay cantidad suficiente de producto");
-        }
+
         return caja;
     }
     //Metodo para devolver el valor de la caja
@@ -319,13 +317,7 @@ public class Operaciones {
         String nombre = JOptionPane.showInputDialog(null, "Ingrese el nombre del producto");
         int cantidad = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la cantidad del producto"));
         double precio = Double.parseDouble(JOptionPane.showInputDialog(null, "Ingrse el precio del producto"));
-        int op;
-        do {
-            op = Integer.parseInt(JOptionPane.showInputDialog(null, "1.Disponible\n2.No disponible"));
-        } while (op > 2);
-        boolean dispo;
-        dispo = op == 1;
-        int pro;
+         int pro;
         pro = Integer.parseInt(JOptionPane.showInputDialog(null, "Desea registrar  \n1.Computadora\n2.Videojuegos"));
         if (pro == 1) {
             int ram = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese la memoria Ram"));
@@ -333,10 +325,10 @@ public class Operaciones {
             int Disco=Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el tamaño del disco"));
             String marca= JOptionPane.showInputDialog(null, "Ingrse la marca del computador");
             int procesador=Integer.parseInt(JOptionPane.showInputDialog(null,"Ingrese el procesador"));
-            catalogo.add(new Computadoras(ram, sistemaO, Disco, marca, procesador, nombre, precio, cantidad, dispo));
+            catalogo.add(new Computadoras(ram, sistemaO, Disco, marca, procesador, nombre, precio, cantidad));
         }else{
             String categoria = JOptionPane.showInputDialog(null, "Ingrese la categoria del videojuego");
-            catalogo.add(new VideoJuegos(categoria, nombre, precio, cantidad, dispo));
+            catalogo.add(new VideoJuegos(categoria, nombre, precio, cantidad));
         }
     }
 

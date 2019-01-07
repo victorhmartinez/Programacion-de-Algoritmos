@@ -12,67 +12,53 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
 /**
  *
  * @author Usuario
  */
 public class Mostrar_Productos extends javax.swing.JFrame {
-public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
-    public void cargarRegistros() {
 
+    public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
+
+ 
+
+    private void llenarTabla() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.addColumn("Nombre Producto");
+          dtm.addColumn("Precio");
+        dtm.addColumn("Cantidad");
+        dtm.addColumn("Categoria");    
+        dtm.addColumn("Ram gb");
+        dtm.addColumn("Sistema Operativo");
+         dtm.addColumn("Disco gb");
+         dtm.addColumn("Marca");   
+        dtm.addColumn("Procesador Core i");
+        
+        Object fila[] = new Object[dtm.getColumnCount()];
         Scanner cargaArchivo;
-        String linea, marca, apellido, cedula, telefono, correo, cargo, tipo, celular;
-        double sueldo;
-
+        String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
-
+            cargaArchivo = new Scanner(new File("Registro_Productos.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
-                marca = tokens[0];
-                
+                fila[0] = tokens[0];
+                fila[1] = tokens[1];
+                fila[2] = tokens[2];
+                fila[4]=tokens[3];
+                fila[5]=tokens[4];
+                fila[6]=tokens[5];
+                fila[7]=tokens[6];
+                fila[8]=tokens[7];
+                dtm.addRow(fila);
             }
+            tablaProductos.setModel(dtm);
             cargaArchivo.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error al leer archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-public void llenarTabla(){
-    DefaultTableModel  dtm = new DefaultTableModel();
-    dtm.addColumn("Cantidad");
-    dtm.addColumn("Nombre Producto");
-    dtm.addColumn("Precio");
-    dtm.addColumn("Disponibilidad");
-    dtm.addColumn("Categoria");
-    dtm.addColumn("Marca");
-    dtm.addColumn("Ram");
-    dtm.addColumn("Disco");
-    dtm.addColumn("Procesador");
-    dtm.addColumn("Sistema Operativo");
-    Object fila[] = new Object[dtm.getColumnCount()];
-    for (int i = 0; i < catalogo.size(); i++) {
-          Producto produ = catalogo.get(i);
-        fila[0]=catalogo.get(i).getCantStock();
-        fila[1]=catalogo.get(i).getNombre();
-        fila[2]=catalogo.get(i).getPrecioUnit();
-        fila[3]=catalogo.get(i).isDisponible();
-        if(produ instanceof Computadoras){
-            fila[5]=((Computadoras) produ).getMarca();
-            fila[6]= ((Computadoras) produ).getRam();
-            fila[7]=((Computadoras) produ).getDisco();
-            fila[8]=((Computadoras) produ).getProcesador();
-            fila[9]=((Computadoras) produ).getSistemaO();
-        }else if(produ instanceof VideoJuegos){
-            fila[4]=((VideoJuegos) produ).getCategoria();
-            
-        }
-         dtm.addRow(fila);
-    }
-     tablaProductos.setModel(dtm);
-}
     public Mostrar_Productos() {
         initComponents();
         llenarTabla();

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,39 +20,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Mostrar_Cliente extends javax.swing.JFrame {
 
-    public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
+   
+    DefaultTableModel dtm = new DefaultTableModel();
 
-    public void cargarRegistros() {
+    private void llenarTabla() {
 
-        Scanner cargaArchivo;
-        String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo, celular;
-        double sueldo;
-
-        try {
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
-
-            while (cargaArchivo.hasNext()) {
-                linea = cargaArchivo.nextLine();
-                String[] tokens = linea.split(",");
-                nombre = tokens[0];
-                apellido = tokens[1];
-                cedula = tokens[2];
-                correo = tokens[3];
-                telefono = tokens[4];
-                celular = tokens[5];
-                tipo = tokens[6];
-                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
-            }
-            cargaArchivo.close();
-
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void llenarTabla() {
-
-        DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Nombre");
         dtm.addColumn("Apellido");
         dtm.addColumn("Cedula");
@@ -58,34 +32,38 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         dtm.addColumn("Celular");
         dtm.addColumn("Telefono");
         dtm.addColumn("Tipo");
-
+        Scanner cargaArchivo;
         Object fila[] = new Object[dtm.getColumnCount()];
+        String linea;
+        try {
+            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                fila[0] = tokens[0];
+                fila[1] = tokens[1];
+                fila[2] = tokens[2];
+                fila[3] = tokens[3];
+                fila[4] = tokens[4];
+                fila[5] = tokens[5];
+                fila[6] = tokens[6];
 
-        for (int i = 0; i < PersonalEmp.size(); i++) {
-            Personal pers = PersonalEmp.get(i);
-            if (pers instanceof Cliente) {
-                fila[0] = PersonalEmp.get(i).getNombre();
-                fila[1] = PersonalEmp.get(i).getApellido();
-                fila[2] = PersonalEmp.get(i).getCedula();
-                fila[3] = PersonalEmp.get(i).getCorreo();
-                fila[4] = PersonalEmp.get(i).getNumCelular();
-                fila[5] = PersonalEmp.get(i).getTelefono();
-                fila[6] = ((Cliente) pers).getTipo();
-
+                dtm.addRow(fila);
             }
-
-            dtm.addRow(fila);
+            tablaClientes.setModel(dtm);
+            cargaArchivo.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Error al leer archivo","Error",JOptionPane.ERROR_MESSAGE);
         }
-        tablaClientes.setModel(dtm);
 
     }
 
     public Mostrar_Cliente() {
         initComponents();
         this.setLocationRelativeTo(null);
-      
-        cargarRegistros();
+       
         llenarTabla();
+
     }
 
     /**
@@ -119,6 +97,8 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setOpaque(false);
@@ -173,7 +153,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("PERSONAL REGISTRADO");
+        jLabel6.setText("CLIENTES  REGISTRADOS");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 230, 50));
 
         lblTelefono.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -201,6 +181,11 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         jPanel1.add(txtTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 290, 34));
 
         jButton3.setText("jButton1");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 550, 130, 36));
 
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
@@ -226,6 +211,10 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         in.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnVolverActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

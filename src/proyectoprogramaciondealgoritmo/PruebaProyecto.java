@@ -19,9 +19,9 @@ public class PruebaProyecto {
         //cCreamos un objeto de la calse operaciones
         Operaciones opera = new Operaciones();
         //Creamos 3 pordutos 1 de tipo videojuegos y 2 de tipo Computadoras
-        Producto compu1 = new Computadoras(4, "Windows 10", 1000, "HP", 3, "Laptop", 896.50, 4, true);
-        Producto producto2 = new Computadoras(8, "Windows 10", 1000, "Dell", 7, "Super Dell", 1200.0, 4, true);
-        Producto producto3 = new VideoJuegos("Accion", "Call of Duty", 7.89, 20, true);
+        Producto compu1 = new Computadoras(4, "Windows 10", 1000, "HP", 3, "Laptop", 896.50, 4);
+        Producto producto2 = new Computadoras(8, "Windows 10", 1000, "Dell", 7, "Super Dell", 1200.0, 4);
+        Producto producto3 = new VideoJuegos("Accion", "Call of Duty", 7.89, 20);
         //Añadimos  productoas al Arraylist
         catalogo.add(compu1);
         catalogo.add(producto2);

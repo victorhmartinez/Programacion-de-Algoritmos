@@ -38,11 +38,11 @@ public class Inicio extends javax.swing.JFrame {
             for (int i = 0; i < catalogo.size(); i++) {
                 Producto prod = catalogo.get(i);
                 if (prod instanceof Computadoras){
-                    archivoProductos.format("%s,%f,%d,&s,%d,%s,%d,%s,%d",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
-                            catalogo.get(i).isDisponible(),((Computadoras) prod).getRam(),((Computadoras) prod).getSistemaO(),((Computadoras) prod).getDisco(),((Computadoras) prod).getMarca(),
+                    archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock()
+                            ,((Computadoras) prod).getRam(),((Computadoras) prod).getSistemaO(),((Computadoras) prod).getDisco(),((Computadoras) prod).getMarca(),
                             ((Computadoras) prod).getProcesador());
                 }else if (prod instanceof VideoJuegos) {
-                    archivoProductos.format("%s,%f,%d,&s,%s",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),catalogo.get(i).isDisponible(),
+                    archivoProductos.format("%s,%f,%d,&s,%s",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
                             ((VideoJuegos) prod).getCategoria());
                 }
             }
@@ -58,7 +58,7 @@ public class Inicio extends javax.swing.JFrame {
         Scanner cargaArchivo;
         String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo,celular;
         double sueldo;
-        int cant = 0;
+       
         try {
 
             cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
@@ -92,24 +92,26 @@ public class Inicio extends javax.swing.JFrame {
                 PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
                 
             }
-           /* int cantidad,ram,disco,procesador;
+           int cantidad,ram,disco,procesador;
             double precioU;
-            boolean disponibilidad;
+        
+            String sistemaO,marca;
             cargaArchivo= new Scanner(new File("Registro_Productos.csv"));
             while(cargaArchivo.hasNext()){
                  linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
-                nombre=tokens[1];
+                nombre=tokens[0];
+                precioU=Double.parseDouble(tokens[1]);
                 cantidad=Integer.parseInt(tokens[2]);
-                precioU=Double.parseDouble(tokens[3]);
-                disponibilidad= Boolean.parseBoolean(tokens[4]);
-                ram=Integer.parseInt(tokens[5]);
-                disco = Integer.parseInt(tokens[6]);
+                ram=Integer.parseInt(tokens[3]);
+                sistemaO=tokens[4];
+                disco = Integer.parseInt(tokens[5]);
+                marca=tokens[6];
                 procesador= Integer.parseInt(tokens[7]);
+              catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
                 
                 
-                
-            }*/
+            }
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);

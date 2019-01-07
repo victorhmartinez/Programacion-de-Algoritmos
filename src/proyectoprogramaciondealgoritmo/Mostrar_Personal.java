@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 /**
@@ -21,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class Mostrar_Personal extends javax.swing.JFrame {
 
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
-   
+       TableRowSorter trs = null;
     public void cargarRegistros() {
 
         Scanner cargaArchivo;
@@ -66,23 +67,29 @@ public class Mostrar_Personal extends javax.swing.JFrame {
         dtm.addColumn("Salario");
         
         Object fila[] = new Object[dtm.getColumnCount()];
-        
-        for (int i = 0; i < PersonalEmp.size(); i++) {
-            Personal pers= PersonalEmp.get(i);
-            if (pers instanceof Empleado) {
-            fila[0] = PersonalEmp.get(i).getNombre();
-            fila[1] = PersonalEmp.get(i).getApellido();
-            fila[2] = PersonalEmp.get(i).getCedula();
-            fila[3] = PersonalEmp.get(i).getCorreo();
-            fila[4] = PersonalEmp.get(i).getNumCelular();
-            fila[5] = PersonalEmp.get(i).getTelefono();
-            fila[6]= ((Empleado) pers).getCargo();
-            fila [7]= ((Empleado) pers).getSalario();
+        Scanner cargaArchivo;
+       String linea;
+        try {
+            cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                fila[0] = tokens[0];
+                fila[1] = tokens[1];
+                fila[2] = tokens[2];
+                fila[3] = tokens[3];
+                fila[4] = tokens[4];
+                fila[5] = tokens[5];
+                fila[6] = tokens[6];
+                fila[7]= tokens[7];
+
+                dtm.addRow(fila);
             }
-         
-            dtm.addRow(fila);
+            tablaPersonal.setModel(dtm);
+            cargaArchivo.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Error al leer archivo","Error",JOptionPane.ERROR_MESSAGE);
         }
-        tablaPersonal.setModel(dtm);
 
     }
 
