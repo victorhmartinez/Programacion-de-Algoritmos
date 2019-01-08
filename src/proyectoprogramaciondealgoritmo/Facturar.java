@@ -6,6 +6,9 @@
 package proyectoprogramaciondealgoritmo;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,20 +17,80 @@ import javax.swing.table.DefaultTableModel;
  * @author Usuario
  */
 public class Facturar extends javax.swing.JFrame {
-
+public static  DefaultTableModel modelo ;
     
     static double total;
     double sub_total;
     double iva;
-    private String ruta_txt = "mi.txt";
+
 
     DefaultTableModel m;
+    private void llenarTablaCliente() {
+  DefaultTableModel dtm = new DefaultTableModel();
+        dtm.addColumn("Nombre");
+        dtm.addColumn("Apellido");
+        dtm.addColumn("Cedula");
+        dtm.addColumn("Correo");
+       
+        dtm.addColumn("Telefono");
+        
+        Scanner cargaArchivo;
+        Object fila[] = new Object[dtm.getColumnCount()];
+        String linea;
+        try {
+            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                fila[0] = tokens[0];
+                fila[1] = tokens[1];
+                fila[2] = tokens[2];
+                fila[3] = tokens[3];          
+                fila[4] = tokens[5];
+              
 
+                dtm.addRow(fila);
+            }
+            tablaCliente.setModel(dtm);
+            cargaArchivo.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null,"Error al leer archivo","Error",JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+      private void llenarTabla() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.addColumn("Nombre Producto");
+          dtm.addColumn("Precio");
+        dtm.addColumn("Cantidad");
+      
+        
+        Object fila[] = new Object[dtm.getColumnCount()];
+        Scanner cargaArchivo;
+        String linea;
+        try {
+            cargaArchivo = new Scanner(new File("Registro_Productos.csv"));
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                fila[0] = tokens[0];
+                fila[1] = tokens[1];
+                fila[2] = tokens[2];
+               
+                dtm.addRow(fila);
+            }
+            tablaProducto.setModel(dtm);
+            cargaArchivo.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Error al leer archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     
 
     public Facturar() {
         initComponents();
-       
+       llenarTablaCliente();
+       llenarTabla();
         total = 0;
         sub_total = 0;
         iva = 0;
@@ -62,7 +125,7 @@ public class Facturar extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         txtCant = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tabla = new javax.swing.JTable();
+        tablaProducto = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
@@ -154,7 +217,7 @@ public class Facturar extends javax.swing.JFrame {
 
         jLabel31.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel31.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel31.setText("DIRECCION :");
+        jLabel31.setText("CORREO :");
         Cliente.getContentPane().add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 90, 113, 34));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
@@ -238,7 +301,7 @@ public class Facturar extends javax.swing.JFrame {
         Producto.getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 560, 100, 34));
         Producto.getContentPane().add(txtCant, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 560, 50, 33));
 
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -249,9 +312,9 @@ public class Facturar extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(tabla);
-        if (tabla.getColumnModel().getColumnCount() > 0) {
-            tabla.getColumnModel().getColumn(0).setMaxWidth(40);
+        jScrollPane3.setViewportView(tablaProducto);
+        if (tablaProducto.getColumnModel().getColumnCount() > 0) {
+            tablaProducto.getColumnModel().getColumn(0).setMaxWidth(40);
         }
 
         Producto.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 920, 400));
@@ -358,30 +421,20 @@ public class Facturar extends javax.swing.JFrame {
         tablRecibo.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         tablRecibo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Cant.", "Descripcion", "V. Unit.", "Total"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tablRecibo.setEnabled(false);
         jScrollPane4.setViewportView(tablRecibo);
         if (tablRecibo.getColumnModel().getColumnCount() > 0) {
@@ -782,9 +835,9 @@ public class Facturar extends javax.swing.JFrame {
     private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
         // TODO add your handling code here:
         int selection = tablaCliente.rowAtPoint(evt.getPoint());
-        txtCedula.setText(String.valueOf(tablaCliente.getValueAt(selection, 0)));
-        txtNomb.setText(String.valueOf(tablaCliente.getValueAt(selection, 1)));
-        txtApellido.setText(String.valueOf(tablaCliente.getValueAt(selection, 2)));
+        txtNomb.setText(String.valueOf(tablaCliente.getValueAt(selection, 0)));
+        txtApellido.setText(String.valueOf(tablaCliente.getValueAt(selection, 1)));
+        txtCedula.setText(String.valueOf(tablaCliente.getValueAt(selection, 2)));
         txtDireccion.setText(String.valueOf(tablaCliente.getValueAt(selection, 3)));
         txtTelefono.setText(String.valueOf(tablaCliente.getValueAt(selection, 4)));
 
@@ -800,10 +853,10 @@ public class Facturar extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un CLIENTE", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
                 m = (DefaultTableModel) tablaCliente.getModel();
-                nombre = tablaCliente.getValueAt(fsl, 1).toString();
-                apellido = tablaCliente.getValueAt(fsl, 2).toString();
+                apellido = tablaCliente.getValueAt(fsl, 1).toString();
+                cedula = tablaCliente.getValueAt(fsl, 2).toString();
                 direccion = tablaCliente.getValueAt(fsl, 3).toString();
-                cedula = tablaCliente.getValueAt(fsl, 0).toString();
+                nombre = tablaCliente.getValueAt(fsl, 0).toString();
                 telefono = tablaCliente.getValueAt(fsl, 4).toString();
 
                 txtClienteN.setText(nombre);
@@ -820,7 +873,7 @@ public class Facturar extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        int fsl = tabla.getSelectedRow();
+        int fsl = tablaProducto.getSelectedRow();
         try {
             String codigo, nombre, precio, cant, paga;
             double calcula, x, ivas = 0.0;
@@ -829,10 +882,10 @@ public class Facturar extends javax.swing.JFrame {
             if (fsl == -1) {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un PRODUCTO", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                m = (DefaultTableModel) tabla.getModel();
-                codigo = tabla.getValueAt(fsl, 0).toString();
-                nombre = tabla.getValueAt(fsl, 1).toString();
-                precio = tabla.getValueAt(fsl, 2).toString();
+                m = (DefaultTableModel) tablaProducto.getModel();
+                nombre = tablaProducto.getValueAt(fsl, 0).toString();
+                precio = tablaProducto.getValueAt(fsl, 1).toString();
+          
                 cant = txtCant.getText();
                 //Calculos
                 x = (Double.parseDouble(precio)) * Integer.parseInt(cant);
@@ -853,27 +906,12 @@ public class Facturar extends javax.swing.JFrame {
                 txtSub_total.setText(" " + sub_total);
                 txtTotal.setText(" " + total);
                 txtIva.setText(" " + iva);
-                 m = (DefaultTableModel) tablRecibo.getModel();
+                
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Verificar la selecion", "Error", JOptionPane.ERROR_MESSAGE);
         }
-               try {
-            String cant, despricion, v_Unit, paga;
-            
-              
-                 m = (DefaultTableModel) tablaFactura.getModel();
-                cant = tablaFactura.getValueAt(fsl, 0).toString();
-                despricion = tablaFactura.getValueAt(fsl, 1).toString();
-                v_Unit = tablaFactura.getValueAt(fsl, 2).toString();
-                paga=tablaFactura.getValueAt(fsl, 3).toString();
-                m = (DefaultTableModel) tablRecibo.getModel();
-                String filaEle[] = {cant, despricion, v_Unit};
-                m.addRow(filaEle);
-           
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Verificar la selecion", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+     
 
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -896,7 +934,7 @@ public class Facturar extends javax.swing.JFrame {
         Facturacion.setSize(963, 930);
         Facturacion.setModal(true);
         Facturacion.setLocationRelativeTo(null);
-        int fsl = tablaFactura.getSelectedRow();
+       
         String nombre, apellido, cedula, direccion, telefono;
         nombre = txtClienteN.getText();
         apellido = txtClienteA.getText();
@@ -914,6 +952,20 @@ public class Facturar extends javax.swing.JFrame {
         txtSub_Total.setText(" " + subtotal);
         txtTotalf.setText(" " + totalf);
         txtIVa12.setText(" " + iva12);
+        modelo = (DefaultTableModel) tablRecibo.getModel();
+       
+        
+        for (int i = 0; i < tablaFactura.getRowCount(); i++) {
+            String []datos = new String[4];
+            datos[0]=tablaFactura.getValueAt(i, 0).toString();
+            datos[1]=tablaFactura.getValueAt(i, 1).toString();
+            datos[2]=tablaFactura.getValueAt(i, 2).toString();
+            datos[3]=tablaFactura.getValueAt(i, 3).toString();
+            modelo.addRow(datos);
+           
+            
+        }
+      
  
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -1021,9 +1073,9 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondo1;
     private javax.swing.JTable tablRecibo;
-    private javax.swing.JTable tabla;
     private javax.swing.JTable tablaCliente;
     private javax.swing.JTable tablaFactura;
+    private javax.swing.JTable tablaProducto;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBusca;
     private javax.swing.JTextField txtCant;

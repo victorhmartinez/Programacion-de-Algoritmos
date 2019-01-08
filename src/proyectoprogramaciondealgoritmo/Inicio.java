@@ -9,12 +9,12 @@ import javax.swing.JOptionPane;
 
 
 public class Inicio extends javax.swing.JFrame {
-
+    int cant;
     Operaciones op = new Operaciones();
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
 
-    public void crearRegistros() {
+    private void crearRegistros() {
         Formatter archivoPers, archivoClientes,archivoProductos;
         try {
             archivoPers = new Formatter("Registro_Empleados.csv");
@@ -38,22 +38,22 @@ public class Inicio extends javax.swing.JFrame {
             for (int i = 0; i < catalogo.size(); i++) {
                 Producto prod = catalogo.get(i);
                 if (prod instanceof Computadoras){
-                    archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock()
+                    archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d\r\n",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock()
                             ,((Computadoras) prod).getRam(),((Computadoras) prod).getSistemaO(),((Computadoras) prod).getDisco(),((Computadoras) prod).getMarca(),
                             ((Computadoras) prod).getProcesador());
                 }else if (prod instanceof VideoJuegos) {
-                    archivoProductos.format("%s,%f,%d,&s,%s",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
+                    archivoProductos.format("%s,%f,%d,&s,%s\r\n",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
                             ((VideoJuegos) prod).getCategoria());
                 }
             }
             archivoProductos.close();
 
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "No se Encontror el registro", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No se Encontro el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
  
-    public void cargarRegistros() {
+    private void cargarRegistros() {
 
         Scanner cargaArchivo;
         String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo,celular;
@@ -76,6 +76,7 @@ public class Inicio extends javax.swing.JFrame {
                 sueldo = Double.parseDouble(tokens[7]);
 
                 PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
+                cant++;
             }
             cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
             
@@ -90,7 +91,7 @@ public class Inicio extends javax.swing.JFrame {
                 celular = tokens[5];
                 tipo= tokens[6];
                 PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
-                
+              
             }
            int cantidad,ram,disco,procesador;
             double precioU;
@@ -109,7 +110,7 @@ public class Inicio extends javax.swing.JFrame {
                 marca=tokens[6];
                 procesador= Integer.parseInt(tokens[7]);
               catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
-                
+                cant++;
                 
             }
             cargaArchivo.close();
@@ -239,8 +240,13 @@ public class Inicio extends javax.swing.JFrame {
 
         btnValorCaja.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnValorCaja.setText("MOSTRAR VALOR EN CAJA");
+        btnValorCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnValorCajaActionPerformed(evt);
+            }
+        });
 
-        lblTitulo.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
+        lblTitulo.setFont(new java.awt.Font("Comic Sans MS", 1, 48)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(255, 255, 255));
         lblTitulo.setText("   BIENVENIDO AL SISTEMA DE VENTAS ");
 
@@ -251,52 +257,49 @@ public class Inicio extends javax.swing.JFrame {
             .addGroup(panelFondoLayout.createSequentialGroup()
                 .addGap(70, 70, 70)
                 .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 813, Short.MAX_VALUE)
                     .addGroup(panelFondoLayout.createSequentialGroup()
                         .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnInNuevoCiente, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegisProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnIngresarEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnRegisProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnInNuevoCiente, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnIngresarEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnVender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnMosClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnValorCaja, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-                            .addComponent(btnMosEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(57, 57, 57))
+                        .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnMosEmpleados, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnVender, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnValorCaja, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                            .addComponent(btnMosClientes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 1111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         panelFondoLayout.setVerticalGroup(
             panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFondoLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(46, 46, 46)
                 .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIngresarEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMosEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelFondoLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(btnMosClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelFondoLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addComponent(btnInNuevoCiente, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39)
+                    .addComponent(btnIngresarEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMosEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegisProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                    .addComponent(btnInNuevoCiente, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMosClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnValorCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30))
+                    .addComponent(btnRegisProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVender, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(panelFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMosProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnValorCaja, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
-        getContentPane().add(panelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 550));
+        getContentPane().add(panelFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1270, 690));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoprogramaciondealgoritmo/Imagenes/lineas,-fondo-negro-186039.jpg"))); // NOI18N
-        getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 550));
+        getContentPane().add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1270, 690));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -322,18 +325,20 @@ public class Inicio extends javax.swing.JFrame {
     private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed
        Mostrar_Personal mPersonal = new Mostrar_Personal();
        mPersonal.setVisible(true);
-       this.dispose();
+     
     }//GEN-LAST:event_btnMosEmpleadosActionPerformed
 
     private void btnMosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosClientesActionPerformed
        Mostrar_Cliente mc = new Mostrar_Cliente();
        mc.setVisible(true);
-       this.dispose();
+       
        
     }//GEN-LAST:event_btnMosClientesActionPerformed
 
     private void btnMosProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosProductoActionPerformed
-      
+      Mostrar_Productos mp = new Mostrar_Productos();
+      mp.setVisible(true);
+     
         
     }//GEN-LAST:event_btnMosProductoActionPerformed
 
@@ -341,6 +346,10 @@ public class Inicio extends javax.swing.JFrame {
        op.registrarProductos(catalogo);
        crearRegistros();
     }//GEN-LAST:event_btnRegisProductoActionPerformed
+
+    private void btnValorCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValorCajaActionPerformed
+JOptionPane.showMessageDialog(null,"El valor de la caja es de "+op.mostrarCaja());
+    }//GEN-LAST:event_btnValorCajaActionPerformed
 
     /**
      * @param args the command line arguments

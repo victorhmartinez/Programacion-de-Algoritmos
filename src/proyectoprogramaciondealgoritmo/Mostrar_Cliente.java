@@ -97,8 +97,6 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setOpaque(false);
@@ -115,6 +113,11 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
 
             }
         ));
+        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaClientes);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 323, 1071, 210));
@@ -215,6 +218,17 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+     int selection =tablaClientes.rowAtPoint(evt.getPoint());
+     txtNombre.setText(String.valueOf(tablaClientes.getValueAt(selection, 0)));
+     txtaApellido.setText(String.valueOf(tablaClientes.getValueAt(selection, 1)));
+     txtCedula.setText(String.valueOf(tablaClientes.getValueAt(selection, 2)));
+     txtCorreo.setText(String.valueOf(tablaClientes.getValueAt(selection, 3)));
+     txtCelular.setText(String.valueOf(tablaClientes.getValueAt(selection, 4)));
+     txtTelefono.setText(String.valueOf(tablaClientes.getValueAt(selection, 5)));
+     txtTipo.setText(String.valueOf(tablaClientes.getValueAt(selection, 6)));
+    }//GEN-LAST:event_tablaClientesMouseClicked
 
     /**
      * @param args the command line arguments
