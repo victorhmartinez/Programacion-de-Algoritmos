@@ -550,7 +550,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Times New Roman" size="24" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="RENTAL - TOOLS"/>
+                    <Property name="text" type="java.lang.String" value="SIN-NOMBRE"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel22">
@@ -566,7 +566,6 @@
             <Component class="javax.swing.JTextField" name="txtClfa">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
-                <Property name="text" type="java.lang.String" value="Hola"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -712,7 +711,6 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtTelFac">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Hola"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="null"/>
                     </Property>
@@ -939,7 +937,6 @@
             </Container>
             <Component class="javax.swing.JTextField" name="txtDirFac">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Hola"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>

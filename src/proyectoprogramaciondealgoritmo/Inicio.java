@@ -317,9 +317,11 @@ public class Inicio extends javax.swing.JFrame {
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         int opcion = op.mostrarNombreProductos(catalogo);
         //Se pide al usuario que ingrese la cantidad  del producto que desee
-        int cantidad = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la  Cantidad que desea del Producto"));
+        
         //Se llama al metodo venerProducto.
-        op.venderProducto(catalogo, opcion, cantidad);
+        Facturar f = new Facturar();
+        f.setVisible(true);
+        //op.venderProducto(catalogo, opcion, cantidad);
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed

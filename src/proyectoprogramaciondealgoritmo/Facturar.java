@@ -384,7 +384,7 @@ public static  DefaultTableModel modelo ;
 
         jLabel21.setBackground(new java.awt.Color(0, 204, 255));
         jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel21.setText("RENTAL - TOOLS");
+        jLabel21.setText("SIN-NOMBRE");
 
         jLabel22.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel22.setText("Calle S/N entre Calle S/N y Calle S/n");
@@ -413,7 +413,6 @@ public static  DefaultTableModel modelo ;
         Recibo.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 310, 70));
 
         txtClfa.setEditable(false);
-        txtClfa.setText("Hola");
         txtClfa.setBorder(null);
         Recibo.add(txtClfa, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 330, 30));
 
@@ -454,7 +453,6 @@ public static  DefaultTableModel modelo ;
         jLabel28.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel28.setText("Telefono :");
 
-        txtTelFac.setText("Hola");
         txtTelFac.setBorder(null);
 
         txtCeFac.setEditable(false);
@@ -604,7 +602,6 @@ public static  DefaultTableModel modelo ;
 
         Recibo.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 660, 560, 70));
 
-        txtDirFac.setText("Hola");
         txtDirFac.setBorder(null);
         Recibo.add(txtDirFac, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 270, 30));
 
