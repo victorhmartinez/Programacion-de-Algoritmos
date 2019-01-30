@@ -19,37 +19,35 @@ import javax.swing.table.DefaultTableModel;
 public class Mostrar_Productos extends javax.swing.JFrame {
 
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
-
- 
-
+     String Carpeta="C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
     private void llenarTabla() {
         DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Nombre Producto");
-          dtm.addColumn("Precio");
+        dtm.addColumn("Precio");
         dtm.addColumn("Cantidad");
-        dtm.addColumn("Categoria");    
+        dtm.addColumn("Categoria");
         dtm.addColumn("Ram gb");
         dtm.addColumn("Sistema Operativo");
-         dtm.addColumn("Disco gb");
-         dtm.addColumn("Marca");   
+        dtm.addColumn("Disco gb");
+        dtm.addColumn("Marca");
         dtm.addColumn("Procesador Core i");
-        
+
         Object fila[] = new Object[dtm.getColumnCount()];
         Scanner cargaArchivo;
         String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Productos.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta+"Registro_Productos.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
                 fila[0] = tokens[0];
                 fila[1] = tokens[1];
                 fila[2] = tokens[2];
-                fila[4]=tokens[3];
-                fila[5]=tokens[4];
-                fila[6]=tokens[5];
-                fila[7]=tokens[6];
-                fila[8]=tokens[7];
+                fila[4] = tokens[3];
+                fila[5] = tokens[4];
+                fila[6] = tokens[5];
+                fila[7] = tokens[6];
+                fila[8] = tokens[7];
                 dtm.addRow(fila);
             }
             tablaProductos.setModel(dtm);

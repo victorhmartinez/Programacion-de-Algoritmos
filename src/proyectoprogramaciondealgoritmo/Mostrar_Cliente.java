@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Mostrar_Cliente extends javax.swing.JFrame {
 
-   
+    String Carpeta="C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
     DefaultTableModel dtm = new DefaultTableModel();
 
     private void llenarTabla() {
@@ -36,7 +36,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         Object fila[] = new Object[dtm.getColumnCount()];
         String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta+"Registro_Cliente.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");

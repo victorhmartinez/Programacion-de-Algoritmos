@@ -16,9 +16,9 @@ public class Cliente extends Personal{
     public Cliente() {
     }
     // constructoq recibe parametros
-    public Cliente(String tipo, String cedula, String nombre, String apellido, String telefono,  String correo, String numCelular) {
+    public Cliente( String cedula, String nombre, String apellido, String telefono,  String correo, String numCelular) {
         super(cedula, nombre, apellido, telefono, correo, numCelular);
-        this.tipo = tipo;
+      
     }
 // metodos especiales set y get para obtener 
     public String getTipo() {

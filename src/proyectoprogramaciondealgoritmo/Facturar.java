@@ -5,10 +5,13 @@
  */
 package proyectoprogramaciondealgoritmo;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,84 +20,199 @@ import javax.swing.table.DefaultTableModel;
  * @author Usuario
  */
 public class Facturar extends javax.swing.JFrame {
-public static  DefaultTableModel modelo ;
-    
+
+    String Carpeta = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
+    public static DefaultTableModel modelo;
     static double total;
     double sub_total;
     double iva;
-
+    Operaciones op = new Operaciones();
+    public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
+    public static ArrayList<Producto> catalogo = new ArrayList();
 
     DefaultTableModel m;
+    
+    
+    
+    private void crearRegistros() {
+        Formatter archivoPers, archivoClientes, archivoProductos;
+        try {
+           
+            archivoClientes = new Formatter(Carpeta + "Registro_Cliente.csv");
+            for (int i = 0; i < PersonalEmp.size(); i++) {
+                Personal pers = PersonalEmp.get(i);
+                if (pers instanceof Cliente) {
+                    archivoClientes.format("%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                            PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
+                            PersonalEmp.get(i).getNumCelular());
+                }
+            }
+            JOptionPane.showMessageDialog(null, " Registrado Correctamente");
+            archivoClientes.close();
+
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "No se Encontro el registro", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void cargarRegistros() {
+
+        Scanner cargaArchivo;
+        String linea, nombre, apellido, cedula, telefono, correo,  celular;
+     
+
+        try {
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
+
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                nombre = tokens[0];
+                apellido = tokens[1];
+                cedula = tokens[2];
+                correo = tokens[3];
+                telefono = tokens[4];
+                celular = tokens[5];
+                PersonalEmp.add(new Cliente(cedula, nombre, apellido, telefono, correo, celular));
+
+            }
+            
+            cargaArchivo.close();
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void cargarVentas (){
+    Scanner leerArchivo;
+        try {
+            leerArchivo= new Scanner(new File(Carpeta + "Valor_Caja.csv"));
+            String linea ;
+            double caja=0;
+            while (leerArchivo.hasNext()) {
+                linea = leerArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                
+                caja=Double.parseDouble(tokens[1]);
+                
+            }
+            JOptionPane.showMessageDialog(null, "El valor de la caja es de :"+caja,"Valor Caja",JOptionPane.OK_OPTION);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "No se puedo leer las ventas");
+        }
+}
+    public void guardarVentas(double caja) {
+        Formatter archivoVentas;
+        try {
+            archivoVentas = new Formatter(Carpeta + "Valor_Caja.csv");
+           
+            archivoVentas.format("%.2f\n\r,",caja);
+            archivoVentas.close();
+            
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "No se pudo guardar la venta", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void llenarTablaCliente() {
-  DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Nombre");
         dtm.addColumn("Apellido");
         dtm.addColumn("Cedula");
         dtm.addColumn("Correo");
-       
         dtm.addColumn("Telefono");
-        
         Scanner cargaArchivo;
         Object fila[] = new Object[dtm.getColumnCount()];
         String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
                 fila[0] = tokens[0];
                 fila[1] = tokens[1];
                 fila[2] = tokens[2];
-                fila[3] = tokens[3];          
+                fila[3] = tokens[3];
                 fila[4] = tokens[5];
-              
 
                 dtm.addRow(fila);
             }
             tablaCliente.setModel(dtm);
             cargaArchivo.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null,"Error al leer archivo","Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al leer archivo", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
-      private void llenarTabla() {
-        DefaultTableModel dtm = new DefaultTableModel();
-        dtm.addColumn("Nombre Producto");
-          dtm.addColumn("Precio");
-        dtm.addColumn("Cantidad");
-      
-        
-        Object fila[] = new Object[dtm.getColumnCount()];
+
+    private void cargarProductos() {
+        String linea, nombre;;
+        int cantidad, ram, disco, procesador;
+        double precioU;
+        String sistemaO, marca;
         Scanner cargaArchivo;
-        String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Productos.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Productos.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
-                fila[0] = tokens[0];
-                fila[1] = tokens[1];
-                fila[2] = tokens[2];
-               
-                dtm.addRow(fila);
+                nombre = tokens[0];
+                precioU = Double.parseDouble(tokens[1]);
+                cantidad = Integer.parseInt(tokens[2]);
+                ram = Integer.parseInt(tokens[3]);
+                sistemaO = tokens[4];
+                disco = Integer.parseInt(tokens[5]);
+                marca = tokens[6];
+                procesador = Integer.parseInt(tokens[7]);
+                catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
+
             }
-            tablaProducto.setModel(dtm);
             cargaArchivo.close();
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Error al leer archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(Facturar.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
-    
+
+    private void llenarTabla() {
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.addColumn("Nombre Producto");
+        dtm.addColumn("Precio");
+        dtm.addColumn("Cantidad");
+        dtm.addColumn("Ram gb");
+        dtm.addColumn("Sistema Operativo");
+        dtm.addColumn("Disco gb");
+        dtm.addColumn("Marca");
+        dtm.addColumn("Procesador Core i");
+        Object fila[] = new Object[dtm.getColumnCount()];
+        for (int i = 0; i < catalogo.size(); i++) {
+            fila[0] = catalogo.get(i).getNombre();
+            fila[1] = catalogo.get(i).getPrecioUnit();
+            fila[2] = catalogo.get(i).getCantStock();
+            Producto prod = catalogo.get(i);
+            if (prod instanceof Computadoras) {
+                fila[3] = ((Computadoras) prod).getRam();
+                fila[4] = ((Computadoras) prod).getSistemaO();
+                fila[5] = ((Computadoras) prod).getDisco();
+                fila[6] = ((Computadoras) prod).getMarca();
+                fila[7] = ((Computadoras) prod).getProcesador();
+
+            }
+            dtm.addRow(fila);
+        }
+        tablaProducto.setModel(dtm);
+    }
 
     public Facturar() {
+        
         initComponents();
-       llenarTablaCliente();
-       llenarTabla();
+        
+       cargarRegistros();
+        cargarProductos();
+        llenarTablaCliente();
+        llenarTabla();
         total = 0;
         sub_total = 0;
         iva = 0;
-      
 
     }
 
@@ -118,15 +236,15 @@ public static  DefaultTableModel modelo ;
         txtDireccion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCliente = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         Producto = new javax.swing.JDialog();
         jLabel16 = new javax.swing.JLabel();
         txtCant = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaProducto = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
+        btnAgregarP = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         lblFondo1 = new javax.swing.JLabel();
@@ -163,19 +281,19 @@ public static  DefaultTableModel modelo ;
         txtDirFac = new javax.swing.JTextField();
         jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lbltelefono = new javax.swing.JLabel();
+        lblRuc = new javax.swing.JLabel();
         txtClienteA = new javax.swing.JTextField();
         txtDir = new javax.swing.JTextField();
         txtRuc = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnBuscarClientes = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnBuscarProductos = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtClienteN = new javax.swing.JTextField();
-        jButton6 = new javax.swing.JButton();
         txtTelef = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -186,7 +304,7 @@ public static  DefaultTableModel modelo ;
         txtIva = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
+        btnGenerarFactura = new javax.swing.JButton();
         lblFondo = new javax.swing.JLabel();
 
         Cliente.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -274,21 +392,21 @@ public static  DefaultTableModel modelo ;
 
         Cliente.getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 860, 270));
 
-        jButton3.setText("REGISTRAR");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrar.setText("REGISTRAR");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnRegistrarActionPerformed(evt);
             }
         });
-        Cliente.getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 560, -1, 30));
+        Cliente.getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 560, -1, 30));
 
-        jButton4.setText("AGREGAR");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.setText("AGREGAR");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnAgregarActionPerformed(evt);
             }
         });
-        Cliente.getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 560, -1, 30));
+        Cliente.getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 560, -1, 30));
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoprogramaciondealgoritmo/Imagenes/lineas,-fondo-negro-186039.jpg"))); // NOI18N
         Cliente.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 900, 630));
@@ -319,13 +437,13 @@ public static  DefaultTableModel modelo ;
 
         Producto.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 920, 400));
 
-        jButton5.setText("AGREGAR");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarP.setText("AGREGAR");
+        btnAgregarP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnAgregarPActionPerformed(evt);
             }
         });
-        Producto.getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 560, -1, 30));
+        Producto.getContentPane().add(btnAgregarP, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 560, -1, 30));
 
         jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
@@ -344,7 +462,7 @@ public static  DefaultTableModel modelo ;
         Recibo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel17.setText("Direccion  :");
+        jLabel17.setText("Correo  :");
         Recibo.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 100, 29));
 
         jPanel5.setBackground(new java.awt.Color(0, 255, 255));
@@ -634,15 +752,15 @@ public static  DefaultTableModel modelo ;
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Telefono :");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 40, 120, 35));
+        lbltelefono.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lbltelefono.setForeground(new java.awt.Color(255, 255, 255));
+        lbltelefono.setText("Telefono :");
+        jPanel1.add(lbltelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 40, 120, 35));
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("RUC o Cedula :");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 130, 35));
+        lblRuc.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblRuc.setForeground(new java.awt.Color(255, 255, 255));
+        lblRuc.setText("RUC o Cedula :");
+        jPanel1.add(lblRuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 130, 35));
 
         txtClienteA.setEditable(false);
         txtClienteA.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -661,26 +779,26 @@ public static  DefaultTableModel modelo ;
         txtRuc.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.add(txtRuc, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 96, 307, 35));
 
-        jButton1.setText("BUSCAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarClientes.setText("BUSCAR");
+        btnBuscarClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarClientesActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 90, 30));
+        jPanel1.add(btnBuscarClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 90, 30));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Fecha :");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 70, 35));
 
-        jButton2.setText("Agregar Producto ");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarProductos.setText("Agregar Producto ");
+        btnBuscarProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnBuscarProductosActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 150, 150, 30));
+        jPanel1.add(btnBuscarProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 150, 150, 30));
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -689,20 +807,12 @@ public static  DefaultTableModel modelo ;
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Direccion :");
+        jLabel8.setText("Correo :");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 97, 35));
 
         txtClienteN.setEditable(false);
         txtClienteN.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.add(txtClienteN, new org.netbeans.lib.awtextra.AbsoluteConstraints(155, 42, 190, 35));
-
-        jButton6.setText("BUSCAR");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 90, 30));
 
         txtTelef.setEditable(false);
         txtTelef.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -712,6 +822,7 @@ public static  DefaultTableModel modelo ;
             }
         });
         jPanel1.add(txtTelef, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 40, 180, 35));
+        jPanel1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 102, 180, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 1060, 210));
 
@@ -752,10 +863,10 @@ public static  DefaultTableModel modelo ;
 
         txtTotal.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jButton7.setText("Generar Factura");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarFactura.setText("Generar Factura");
+        btnGenerarFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnGenerarFacturaActionPerformed(evt);
             }
         });
 
@@ -782,7 +893,7 @@ public static  DefaultTableModel modelo ;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(122, 122, 122)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnGenerarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -799,7 +910,7 @@ public static  DefaultTableModel modelo ;
                         .addComponent(txtIva, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnGenerarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -815,19 +926,21 @@ public static  DefaultTableModel modelo ;
         // TODO add your handling code here:
     }//GEN-LAST:event_txtClienteAActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+    // TODO add your handling code here:
+    op.registrarCliente(PersonalEmp);
+    crearRegistros();
+    llenarTablaCliente();
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBuscarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClientesActionPerformed
         // TODO add your handling code here:
         Cliente.setSize(900, 650);
         Cliente.setLocationRelativeTo(null);
         Cliente.setModal(true);
         Cliente.setVisible(true);
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnBuscarClientesActionPerformed
 
     private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
         // TODO add your handling code here:
@@ -840,7 +953,7 @@ public static  DefaultTableModel modelo ;
 
     }//GEN-LAST:event_tablaClienteMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
 
         int fsl = tablaCliente.getSelectedRow();
@@ -866,72 +979,73 @@ public static  DefaultTableModel modelo ;
         } catch (Exception e) {
         }
 
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
         // TODO add your handling code here:
         int fsl = tablaProducto.getSelectedRow();
         try {
-            String codigo, nombre, precio, cant, paga;
+            String nombre, precio, cant, paga;
             double calcula, x, ivas = 0.0;
-            int cantida = 0;
 
             if (fsl == -1) {
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un PRODUCTO", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                m = (DefaultTableModel) tablaProducto.getModel();
-                nombre = tablaProducto.getValueAt(fsl, 0).toString();
-                precio = tablaProducto.getValueAt(fsl, 1).toString();
-          
+
                 cant = txtCant.getText();
-                //Calculos
-                x = (Double.parseDouble(precio)) * Integer.parseInt(cant);
-                paga = String.valueOf(x);
-                m = (DefaultTableModel) tablaFactura.getModel();
-                
-                
+                Operaciones op = new Operaciones();
+                //op.venderProducto(catalogo, fsl, Integer.parseInt(cant));
+                if (op.venderProducto(catalogo, fsl, Integer.parseInt(cant))) {
+                    llenarTabla();
+                    m = (DefaultTableModel) tablaProducto.getModel();
+                    nombre = tablaProducto.getValueAt(fsl, 0).toString();
+                    precio = tablaProducto.getValueAt(fsl, 1).toString();
 
-                String filaEle[] = {cant, nombre, precio, paga};
-                m.addRow(filaEle);
-                calcula = (Double.parseDouble(precio)) * Integer.parseInt(txtCant.getText());
+                    //Calculos              
+                    x = (Double.parseDouble(precio)) * Integer.parseInt(cant);
+                    paga = String.valueOf(x);
+                    m = (DefaultTableModel) tablaFactura.getModel();
 
-                total = total + calcula;
-                ivas = total * 0.12;
-                iva = ivas;
-                sub_total = total - ivas;
+                    String filaEle[] = {cant, nombre, precio, paga};
+                    m.addRow(filaEle);
+                    calcula = (Double.parseDouble(precio)) * Integer.parseInt(txtCant.getText());
 
-                txtSub_total.setText(" " + sub_total);
-                txtTotal.setText(" " + total);
-                txtIva.setText(" " + iva);
-                
+                    total = total + calcula;
+                    ivas = total * 0.12;
+                    iva = ivas;
+                    sub_total = total - ivas;
+
+                    txtSub_total.setText(" " + sub_total);
+                    txtIva.setText(" " + iva);
+                    txtTotal.setText(" " + total);
+
+                }
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Verificar la selecion", "Error", JOptionPane.ERROR_MESSAGE);
         }
-     
 
-    }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnAgregarPActionPerformed
+
+    private void btnBuscarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductosActionPerformed
         // TODO add your handling code here:
+
         Producto.setSize(970, 650);
         Producto.setLocationRelativeTo(null);
         Producto.setModal(true);
         Producto.setVisible(true);
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnBuscarProductosActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnGenerarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFacturaActionPerformed
         // TODO add your handling code here:
         Facturacion.setVisible(true);
         Facturacion.setSize(963, 930);
         Facturacion.setModal(true);
         Facturacion.setLocationRelativeTo(null);
-       
+
         String nombre, apellido, cedula, direccion, telefono;
         nombre = txtClienteN.getText();
         apellido = txtClienteA.getText();
@@ -950,21 +1064,19 @@ public static  DefaultTableModel modelo ;
         txtTotalf.setText(" " + totalf);
         txtIVa12.setText(" " + iva12);
         modelo = (DefaultTableModel) tablRecibo.getModel();
-       
-        
+        guardarVentas(total);
         for (int i = 0; i < tablaFactura.getRowCount(); i++) {
-            String []datos = new String[4];
-            datos[0]=tablaFactura.getValueAt(i, 0).toString();
-            datos[1]=tablaFactura.getValueAt(i, 1).toString();
-            datos[2]=tablaFactura.getValueAt(i, 2).toString();
-            datos[3]=tablaFactura.getValueAt(i, 3).toString();
+            String[] datos = new String[4];
+            datos[0] = tablaFactura.getValueAt(i, 0).toString();
+            datos[1] = tablaFactura.getValueAt(i, 1).toString();
+            datos[2] = tablaFactura.getValueAt(i, 2).toString();
+            datos[3] = tablaFactura.getValueAt(i, 3).toString();
             modelo.addRow(datos);
-           
-            
+
         }
       
- 
-    }//GEN-LAST:event_jButton7ActionPerformed
+
+    }//GEN-LAST:event_btnGenerarFacturaActionPerformed
 
     private void txtTelefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefActionPerformed
         // TODO add your handling code here:
@@ -1013,14 +1125,14 @@ public static  DefaultTableModel modelo ;
     private javax.swing.JDialog Facturacion;
     private javax.swing.JDialog Producto;
     private javax.swing.JPanel Recibo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnAgregarP;
+    private javax.swing.JButton btnBuscarClientes;
+    private javax.swing.JButton btnBuscarProductos;
+    private javax.swing.JButton btnGenerarFactura;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton jButton8;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1043,10 +1155,8 @@ public static  DefaultTableModel modelo ;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1069,6 +1179,8 @@ public static  DefaultTableModel modelo ;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondo1;
+    private javax.swing.JLabel lblRuc;
+    private javax.swing.JLabel lbltelefono;
     private javax.swing.JTable tablRecibo;
     private javax.swing.JTable tablaCliente;
     private javax.swing.JTable tablaFactura;

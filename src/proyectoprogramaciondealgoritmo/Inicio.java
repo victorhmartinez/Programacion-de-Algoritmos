@@ -7,18 +7,20 @@ import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-
 public class Inicio extends javax.swing.JFrame {
-    int cant;
+
+    String Carpeta = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
+    File crear_Carpeta = new File(Carpeta);
+
     Operaciones op = new Operaciones();
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
 
-    private void crearRegistros() {
-        Formatter archivoPers, archivoClientes,archivoProductos;
+    public  void crearRegistros() {
+        Formatter archivoPers, archivoClientes, archivoProductos;
         try {
-            archivoPers = new Formatter("Registro_Empleados.csv");
-            archivoClientes = new Formatter("Registro_Cliente.csv");
+            archivoPers = new Formatter(Carpeta + "Registro_Empleados.csv");
+            archivoClientes = new Formatter(Carpeta + "Registro_Cliente.csv");
             for (int i = 0; i < PersonalEmp.size(); i++) {
                 Personal pers = PersonalEmp.get(i);
                 if (pers instanceof Empleado) {
@@ -26,24 +28,21 @@ public class Inicio extends javax.swing.JFrame {
                             PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
                             PersonalEmp.get(i).getNumCelular(), ((Empleado) pers).getCargo(), ((Empleado) pers).getSalario());
                 } else if (pers instanceof Cliente) {
-                    archivoClientes.format("%s,%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
+                    archivoClientes.format("%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
                             PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
-                            PersonalEmp.get(i).getNumCelular(), ((Cliente) pers).getTipo());
+                            PersonalEmp.get(i).getNumCelular());
                 }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
             archivoClientes.close();
             archivoPers.close();
-            archivoProductos =new Formatter("Registro_Productos.csv");
+            archivoProductos = new Formatter(Carpeta + "Registro_Productos.csv");
             for (int i = 0; i < catalogo.size(); i++) {
                 Producto prod = catalogo.get(i);
-                if (prod instanceof Computadoras){
-                    archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d\r\n",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock()
-                            ,((Computadoras) prod).getRam(),((Computadoras) prod).getSistemaO(),((Computadoras) prod).getDisco(),((Computadoras) prod).getMarca(),
+                if (prod instanceof Computadoras) {
+                    archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d\r\n", catalogo.get(i).getNombre(), catalogo.get(i).getPrecioUnit(), catalogo.get(i).getCantStock(),
+                             ((Computadoras) prod).getRam(), ((Computadoras) prod).getSistemaO(), ((Computadoras) prod).getDisco(), ((Computadoras) prod).getMarca(),
                             ((Computadoras) prod).getProcesador());
-                }else if (prod instanceof VideoJuegos) {
-                    archivoProductos.format("%s,%f,%d,&s,%s\r\n",catalogo.get(i).getNombre(),catalogo.get(i).getPrecioUnit(),catalogo.get(i).getCantStock(),
-                            ((VideoJuegos) prod).getCategoria());
                 }
             }
             archivoProductos.close();
@@ -52,16 +51,16 @@ public class Inicio extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No se Encontro el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
- 
-    private void cargarRegistros() {
+
+    public void cargarRegistros() {
 
         Scanner cargaArchivo;
-        String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo,celular;
+        String linea, nombre, apellido, cedula, telefono, correo, cargo, celular;
         double sueldo;
-       
+
         try {
 
-            cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Empleados.csv"));
 
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
@@ -76,10 +75,10 @@ public class Inicio extends javax.swing.JFrame {
                 sueldo = Double.parseDouble(tokens[7]);
 
                 PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
-                cant++;
+
             }
-            cargaArchivo = new Scanner(new File("Registro_Cliente.csv"));
-            
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
+
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -89,29 +88,26 @@ public class Inicio extends javax.swing.JFrame {
                 correo = tokens[3];
                 telefono = tokens[4];
                 celular = tokens[5];
-                tipo= tokens[6];
-                PersonalEmp.add(new Cliente(tipo, cedula, nombre, apellido, telefono, correo, celular));
-              
+                PersonalEmp.add(new Cliente(cedula, nombre, apellido, telefono, correo, celular));
+
             }
-           int cantidad,ram,disco,procesador;
+            int cantidad, ram, disco, procesador;
             double precioU;
-        
-            String sistemaO,marca;
-            cargaArchivo= new Scanner(new File("Registro_Productos.csv"));
-            while(cargaArchivo.hasNext()){
-                 linea = cargaArchivo.nextLine();
+            String sistemaO, marca;
+            cargaArchivo = new Scanner(new File(Carpeta + "Registro_Productos.csv"));
+            while (cargaArchivo.hasNext()) {
+                linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
-                nombre=tokens[0];
-                precioU=Double.parseDouble(tokens[1]);
-                cantidad=Integer.parseInt(tokens[2]);
-                ram=Integer.parseInt(tokens[3]);
-                sistemaO=tokens[4];
+                nombre = tokens[0];
+                precioU = Double.parseDouble(tokens[1]);
+                cantidad = Integer.parseInt(tokens[2]);
+                ram = Integer.parseInt(tokens[3]);
+                sistemaO = tokens[4];
                 disco = Integer.parseInt(tokens[5]);
-                marca=tokens[6];
-                procesador= Integer.parseInt(tokens[7]);
-              catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
-                cant++;
-                
+                marca = tokens[6];
+                procesador = Integer.parseInt(tokens[7]);
+                catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
+
             }
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
@@ -119,12 +115,11 @@ public class Inicio extends javax.swing.JFrame {
         }
     }
 
- 
     public Inicio() {
         initComponents();
         this.setLocationRelativeTo(null);
         cargarRegistros();
-         
+
     }
 
 
@@ -315,42 +310,41 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInNuevoCienteActionPerformed
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        int opcion = op.mostrarNombreProductos(catalogo);
-        //Se pide al usuario que ingrese la cantidad  del producto que desee
-        
+
         //Se llama al metodo venerProducto.
         Facturar f = new Facturar();
         f.setVisible(true);
-        //op.venderProducto(catalogo, opcion, cantidad);
+
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed
-       Mostrar_Personal mPersonal = new Mostrar_Personal();
-       mPersonal.setVisible(true);
-     
+        Mostrar_Personal mPersonal = new Mostrar_Personal();
+        mPersonal.setVisible(true);
+
     }//GEN-LAST:event_btnMosEmpleadosActionPerformed
 
     private void btnMosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosClientesActionPerformed
-       Mostrar_Cliente mc = new Mostrar_Cliente();
-       mc.setVisible(true);
-       
-       
+        Mostrar_Cliente mc = new Mostrar_Cliente();
+        mc.setVisible(true);
+
+
     }//GEN-LAST:event_btnMosClientesActionPerformed
 
     private void btnMosProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosProductoActionPerformed
-      Mostrar_Productos mp = new Mostrar_Productos();
-      mp.setVisible(true);
-     
-        
+        Mostrar_Productos mp = new Mostrar_Productos();
+        mp.setVisible(true);
+
+
     }//GEN-LAST:event_btnMosProductoActionPerformed
 
     private void btnRegisProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisProductoActionPerformed
-       op.registrarProductos(catalogo);
-       crearRegistros();
+        op.registrarProductos(catalogo);
+        crearRegistros();
     }//GEN-LAST:event_btnRegisProductoActionPerformed
 
     private void btnValorCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValorCajaActionPerformed
-JOptionPane.showMessageDialog(null,"El valor de la caja es de "+op.mostrarCaja());
+        Facturar f = new Facturar();
+        f.cargarVentas();
     }//GEN-LAST:event_btnValorCajaActionPerformed
 
     /**

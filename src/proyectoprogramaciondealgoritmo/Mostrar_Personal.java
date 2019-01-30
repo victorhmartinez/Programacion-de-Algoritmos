@@ -22,39 +22,12 @@ import javax.swing.table.TableRowSorter;
 public class Mostrar_Personal extends javax.swing.JFrame {
 
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
+     String Carpeta="C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo";
        TableRowSorter trs = null;
-    public void cargarRegistros() {
+       
 
-        Scanner cargaArchivo;
-        String linea, nombre, apellido, cedula, telefono, correo, cargo, tipo, celular;
-        double sueldo;
-        
 
-        try {
-
-            cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
-
-            while (cargaArchivo.hasNext()) {
-                linea = cargaArchivo.nextLine();
-                String[] tokens = linea.split(",");
-                nombre = tokens[0];
-                apellido = tokens[1];
-                cedula = tokens[2];
-                correo = tokens[3];
-                telefono = tokens[4];
-                celular = tokens[5];
-                cargo = tokens[6];
-                sueldo = Double.parseDouble(tokens[7]);
-              
-                PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
-            }
-         
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void llenarTabla() {
+    private void llenarTabla() {
         
         DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Nombre");
@@ -70,7 +43,7 @@ public class Mostrar_Personal extends javax.swing.JFrame {
         Scanner cargaArchivo;
        String linea;
         try {
-            cargaArchivo = new Scanner(new File("Registro_Empleados.csv"));
+            cargaArchivo = new Scanner(new File(Carpeta+"Registro_Empleados.csv"));
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -95,7 +68,7 @@ public class Mostrar_Personal extends javax.swing.JFrame {
 
     public Mostrar_Personal() {
         initComponents();
-        cargarRegistros();
+    
         llenarTabla();
 
     }
