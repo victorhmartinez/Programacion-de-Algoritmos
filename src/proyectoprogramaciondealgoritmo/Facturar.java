@@ -82,24 +82,7 @@ public class Facturar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public void cargarVentas (){
-    Scanner leerArchivo;
-        try {
-            leerArchivo= new Scanner(new File(Carpeta + "Valor_Caja.csv"));
-            String linea ;
-            double caja=0;
-            while (leerArchivo.hasNext()) {
-                linea = leerArchivo.nextLine();
-                String[] tokens = linea.split(",");
-                
-                caja=Double.parseDouble(tokens[1]);
-                
-            }
-            JOptionPane.showMessageDialog(null, "El valor de la caja es de :"+caja,"Valor Caja",JOptionPane.OK_OPTION);
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "No se puedo leer las ventas");
-        }
-}
+
     public void guardarVentas(double caja) {
         Formatter archivoVentas;
         try {
@@ -222,7 +205,6 @@ public class Facturar extends javax.swing.JFrame {
 
         Cliente = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
-        txtBusca = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -246,14 +228,13 @@ public class Facturar extends javax.swing.JFrame {
         tablaProducto = new javax.swing.JTable();
         btnAgregarP = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         lblFondo1 = new javax.swing.JLabel();
         Facturacion = new javax.swing.JDialog();
         Recibo = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
@@ -309,11 +290,10 @@ public class Facturar extends javax.swing.JFrame {
 
         Cliente.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("BUSCAR :");
-        Cliente.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 84, 34));
-        Cliente.getContentPane().add(txtBusca, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 450, 34));
+        jLabel1.setText("CLIENTES REGISTRADOS");
+        Cliente.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 320, 34));
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
@@ -445,11 +425,10 @@ public class Facturar extends javax.swing.JFrame {
         });
         Producto.getContentPane().add(btnAgregarP, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 560, -1, 30));
 
-        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setText("BUSCAR :");
-        Producto.getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 84, 34));
-        Producto.getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(134, 36, 314, 33));
+        jLabel18.setText("PRODUCTOS DISPONIBLES");
+        Producto.getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 360, 34));
 
         lblFondo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/proyectoprogramaciondealgoritmo/Imagenes/lineas,-fondo-negro-186039.jpg"))); // NOI18N
         Producto.getContentPane().add(lblFondo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 620));
@@ -471,10 +450,6 @@ public class Facturar extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel19.setText("Factura Nro 0001");
 
-        jLabel20.setBackground(new java.awt.Color(0, 204, 255));
-        jLabel20.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel20.setText("Fecha :");
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -483,7 +458,9 @@ public class Facturar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -491,7 +468,7 @@ public class Facturar extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
                 .addContainerGap())
         );
 
@@ -996,10 +973,13 @@ public class Facturar extends javax.swing.JFrame {
                 Operaciones op = new Operaciones();
                 //op.venderProducto(catalogo, fsl, Integer.parseInt(cant));
                 if (op.venderProducto(catalogo, fsl, Integer.parseInt(cant))) {
+                     precio = String.valueOf( op.Modificar(catalogo, fsl));
+        
+            
                     llenarTabla();
                     m = (DefaultTableModel) tablaProducto.getModel();
                     nombre = tablaProducto.getValueAt(fsl, 0).toString();
-                    precio = tablaProducto.getValueAt(fsl, 1).toString();
+                    
 
                     //Calculos              
                     x = (Double.parseDouble(precio)) * Integer.parseInt(cant);
@@ -1145,7 +1125,6 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -1155,6 +1134,7 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel5;
@@ -1176,7 +1156,6 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondo1;
     private javax.swing.JLabel lblRuc;
@@ -1186,7 +1165,6 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JTable tablaFactura;
     private javax.swing.JTable tablaProducto;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtBusca;
     private javax.swing.JTextField txtCant;
     private javax.swing.JTextField txtCeFac;
     private javax.swing.JTextField txtCedula;

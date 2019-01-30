@@ -15,6 +15,23 @@ public class Inicio extends javax.swing.JFrame {
     Operaciones op = new Operaciones();
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
+        public void cargarVentas (){
+    Scanner leerArchivo;
+        try {
+            leerArchivo= new Scanner(new File(Carpeta + "Valor_Caja.csv"));
+            String linea ;
+            double caja=0;
+          
+                linea = leerArchivo.nextLine();
+                String[] tokens = linea.split(",");
+                caja=Double.parseDouble(tokens[0]);
+                
+        
+            JOptionPane.showMessageDialog(null, "El valor de la caja es de :"+caja,"Valor Caja",JOptionPane.OK_OPTION);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "No se puedo leer las ventas");
+        }
+}
 
     public  void crearRegistros() {
         Formatter archivoPers, archivoClientes, archivoProductos;
@@ -343,8 +360,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegisProductoActionPerformed
 
     private void btnValorCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValorCajaActionPerformed
-        Facturar f = new Facturar();
-        f.cargarVentas();
+  cargarVentas();
     }//GEN-LAST:event_btnValorCajaActionPerformed
 
     /**

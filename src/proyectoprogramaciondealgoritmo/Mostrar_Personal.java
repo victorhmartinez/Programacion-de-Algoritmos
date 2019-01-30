@@ -22,7 +22,7 @@ import javax.swing.table.TableRowSorter;
 public class Mostrar_Personal extends javax.swing.JFrame {
 
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
-     String Carpeta="C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo";
+     String Carpeta="C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
        TableRowSorter trs = null;
        
 

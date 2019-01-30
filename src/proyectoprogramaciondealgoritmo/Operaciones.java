@@ -6,7 +6,6 @@ import javax.swing.JOptionPane;
 
 public class Operaciones {
 
-    double caja;
 
 //Metodo para registar un cliente que recibe como parametro un arrayList de tipo Personal
     public void registrarCliente(ArrayList<Personal> personal) {
@@ -116,14 +115,13 @@ public class Operaciones {
             //Si se cumple establece la nueva cantidad de stock
             productos.get(respuesta).setCantStock(productos.get(respuesta).getCantStock() - cantidadP);
             //Recibimos en una variable tipo double el valor q devuelve el metodo modificar 
-            double precio = Modificar(productos, respuesta, catalogo);
+            double precio = Modificar(productos, respuesta);
             System.out.println(precio);
             System.out.println(cantidadP);
             precio = precio * cantidadP;
             JOptionPane.showMessageDialog(null, "Venta Realizada con Exito");
             //devolvemos el valor de la caja + el precio
-            caja += precio;
-            System.out.println(caja);
+
             // conun else  preguntamos la si la cantidad de producto es menor de la cantidad mayor de la cantidad Pedida
             return true;
         } else {// en caso de q no  haya la suficiente cantidad de producto 
@@ -135,11 +133,12 @@ public class Operaciones {
    
 //Metodo modificar que recibe parametros un arraylist, respueta del usuario, y una varialbe tipo catalogo
 
-    public double Modificar(ArrayList<Producto> productos, int respuesta, Producto catalogo) {
+    public double Modificar(ArrayList<Producto> productos, int respuesta ) {
         //Declaramos variables tipo
         int n;
         int opcion;
         int mo;
+        Producto catalogo = productos.get(respuesta);
         //Decalaramos  arreglos de tipo double 
         double preciosD[] = {160, 200, 260};
         double precioRam[] = {130, 250, 450};

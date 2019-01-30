@@ -7,10 +7,9 @@ package proyectoprogramaciondealgoritmo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -31,7 +30,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         dtm.addColumn("Correo");
         dtm.addColumn("Celular");
         dtm.addColumn("Telefono");
-        dtm.addColumn("Tipo");
+
         Scanner cargaArchivo;
         Object fila[] = new Object[dtm.getColumnCount()];
         String linea;
@@ -46,7 +45,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
                 fila[3] = tokens[3];
                 fila[4] = tokens[4];
                 fila[5] = tokens[5];
-                fila[6] = tokens[6];
+             
 
                 dtm.addRow(fila);
             }
@@ -89,10 +88,8 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         lblTelefono = new javax.swing.JLabel();
         lblCelular = new javax.swing.JLabel();
-        lblTipo = new javax.swing.JLabel();
         txtCelular = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
-        txtTipo = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         btnVolver = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -169,19 +166,11 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
         lblCelular.setText("Celular :");
         jPanel1.add(lblCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(702, 76, 91, 34));
 
-        lblTipo.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        lblTipo.setForeground(new java.awt.Color(255, 255, 255));
-        lblTipo.setText("Tipo :");
-        jPanel1.add(lblTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 200, 91, 34));
-
         txtCelular.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jPanel1.add(txtCelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 140, 290, 34));
 
         txtTelefono.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 80, 290, 34));
-
-        txtTipo.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jPanel1.add(txtTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 200, 290, 34));
 
         jButton3.setText("jButton1");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +216,7 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
      txtCorreo.setText(String.valueOf(tablaClientes.getValueAt(selection, 3)));
      txtCelular.setText(String.valueOf(tablaClientes.getValueAt(selection, 4)));
      txtTelefono.setText(String.valueOf(tablaClientes.getValueAt(selection, 5)));
-     txtTipo.setText(String.valueOf(tablaClientes.getValueAt(selection, 6)));
+    
     }//GEN-LAST:event_tablaClientesMouseClicked
 
     /**
@@ -279,14 +268,12 @@ public class Mostrar_Cliente extends javax.swing.JFrame {
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblTelefono;
-    private javax.swing.JLabel lblTipo;
     private javax.swing.JTable tablaClientes;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtCorreo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
-    private javax.swing.JTextField txtTipo;
     private javax.swing.JTextField txtaApellido;
     // End of variables declaration//GEN-END:variables
 }
