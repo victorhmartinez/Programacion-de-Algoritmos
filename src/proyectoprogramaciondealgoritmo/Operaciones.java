@@ -114,11 +114,8 @@ public class Operaciones {
         if (catalogo instanceof Computadoras && productos.get(respuesta).getCantStock() >= cantidadP) {
             //Si se cumple establece la nueva cantidad de stock
             productos.get(respuesta).setCantStock(productos.get(respuesta).getCantStock() - cantidadP);
-            //Recibimos en una variable tipo double el valor q devuelve el metodo modificar 
-            double precio = Modificar(productos, respuesta);
-            System.out.println(precio);
-            System.out.println(cantidadP);
-            precio = precio * cantidadP;
+            
+         
             JOptionPane.showMessageDialog(null, "Venta Realizada con Exito");
             //devolvemos el valor de la caja + el precio
 

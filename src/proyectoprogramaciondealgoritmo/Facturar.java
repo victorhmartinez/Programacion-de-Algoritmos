@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package proyectoprogramaciondealgoritmo;
 
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -20,51 +17,59 @@ import javax.swing.table.DefaultTableModel;
  * @author Usuario
  */
 public class Facturar extends javax.swing.JFrame {
-
+    //CREAMOS UN VARIABLE DE TIPO STRING PARA SABER EN QUE DIRECCION QUEREMOS O TENEMOS GUARDADOS NUESTROA ARCHIVOS
     String Carpeta = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
+    //CREMOS UNA VARIBLE  DE TIPO DE DEFAULTABLEMODEL PARA PODER EDITA EL MODELO DE NUESTRA TABLA 1
     public static DefaultTableModel modelo;
+    //CREAMOS DE VARIABLE DE TIPO DOUBLE PARA PODER CALCULAR EL TOTAL,SUBTOTAL Y EL IVA A PAGAR
     static double total;
     double sub_total;
     double iva;
+    //CREAMOS UN OBEJETO DE TIPO OP
     Operaciones op = new Operaciones();
+    //CREMOS DOS ARRAYLISTS DEL TIPO PERSONAL Y PRODUCTO
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList();
-
+    //CREMOS UNA VARIBLE  DE TIPO DE DEFAULTABLEMODEL PARA PODER EDITA EL MODELO DE NUESTRA TABLA 2
     DefaultTableModel m;
-    
-    
-    
+    //USAMOS UN METODO CREAR REGISTROS 
     private void crearRegistros() {
-        Formatter archivoPers, archivoClientes, archivoProductos;
+        Formatter  archivoClientes;
+        //ENCERRAMOS UN TRY-CATH PARA CAPTURA CUALQUIER EERO QUE SE PUEDA PRODUCIR
         try {
-           
+            //CON LA AYUDA DE NUESTRA VARIABLE FORMAT CREAMOS LOS ARCHVISO
             archivoClientes = new Formatter(Carpeta + "Registro_Cliente.csv");
+            //MEDIANTE UN FOR RECORREMOS NUESTROS ARRAYLIST 
             for (int i = 0; i < PersonalEmp.size(); i++) {
                 Personal pers = PersonalEmp.get(i);
                 if (pers instanceof Cliente) {
+                    //ESCRIBIMOS EN NUESTRO ARCHIVO CON LOS PARAMETROS QUE TIENE NUESTRO ARRAYLIST
                     archivoClientes.format("%s,%s,%s,%s,%s,%s\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
                             PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
                             PersonalEmp.get(i).getNumCelular());
                 }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
+            //CERRAMOS NUESTRO ARCHIVO
             archivoClientes.close();
 
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se Encontro el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+//METODO CARGARREGISTROS PARA MOSTRAR EL PESRSONAL , CLIENTES Y PRODUCTOS  QUE HEMOS REGISTRADO
     private void cargarRegistros() {
-
+        //USAMOS UNA VARIABLE TIPO SCANNER
         Scanner cargaArchivo;
+        //CREAMOS VARIABLES PARA RECIBIR LOS VALORES
         String linea, nombre, apellido, cedula, telefono, correo,  celular;
-     
-
+        //ENCERRAMOS EN UN TRY-CATCH PARA CAPTURA CUALQUIER POSIBLE ERROR
         try {
+            //cON LA AYUDA DE NUESTRA VARIABLE DE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
-
+             //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
+                
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
                 nombre = tokens[0];
@@ -73,44 +78,57 @@ public class Facturar extends javax.swing.JFrame {
                 correo = tokens[3];
                 telefono = tokens[4];
                 celular = tokens[5];
+                  // LE AÑADIMOS A NUESTRO ARRAYLYST NUESTRO NUEVO CLIENTE
                 PersonalEmp.add(new Cliente(cedula, nombre, apellido, telefono, correo, celular));
 
             }
-            
+            //CERRAMOS NUESTRO ARCHIVO
             cargaArchivo.close();
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+//mETODO PARA GUARDAR LA VENTAS REALIZADAS
     public void guardarVentas(double caja) {
+        //cREAMOS UNA VARIALE TIPO FORMATTER
         Formatter archivoVentas;
+        //ENCERRAMOS UN TRY-CATH PARA CAPTURA CUALQUIER EERO QUE SE PUEDA PRODUCIR
         try {
+             //CON LA AYUDA DE NUESTRA VARIABLE FORMAT CREAMOS LOS ARCHVISO
             archivoVentas = new Formatter(Carpeta + "Valor_Caja.csv");
-           
+            //ESCRIBIMOS EN NUESTRO ARCHIVO CON LOS DATOS QUEREMOS GUARDAR
             archivoVentas.format("%.2f\n\r,",caja);
+            //CERRAMOS NUESTRO ARCHIVO
             archivoVentas.close();
             
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se pudo guardar la venta", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+//METODO PARA LLENAR NUESTRA TABLAS
     private void llenarTablaCliente() {
+        //CRESMOA UN OBJETO DE TIPO DEFAULTTABLEMODEL PARA PODER DARLE UN MODELO A NUESTRA TABLAcLIENTES
         DefaultTableModel dtm = new DefaultTableModel();
+        //AÑADIMOS A NUESTRA TABLA LAS COLUMNAS CON SU RESPECTIVO NOBRE
         dtm.addColumn("Nombre");
         dtm.addColumn("Apellido");
         dtm.addColumn("Cedula");
         dtm.addColumn("Correo");
         dtm.addColumn("Telefono");
+        //CREAMOS UNS VARIABLE DE TIPO SCANNER 
         Scanner cargaArchivo;
+        //cREAMOS UN ARREGLO CON DE TAMAÑO DEL NUEMO DE COLUMAS
         Object fila[] = new Object[dtm.getColumnCount()];
         String linea;
+        //ENCERRAMOS UN TRY-CATH PARA CAPTURA CUALQUIER EERO QUE SE PUEDA PRODUCIR
         try {
+            //CON LA AYUDA DE NUESZRA VARIABLDE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
+            //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
+                //aÑADIMOS A  NUESTRA FILAS LOS VALORES OBTENIDO DEL ARCHIVO
                 fila[0] = tokens[0];
                 fila[1] = tokens[1];
                 fila[2] = tokens[2];
@@ -119,6 +137,7 @@ public class Facturar extends javax.swing.JFrame {
 
                 dtm.addRow(fila);
             }
+            //ESTABLECMOS EL MODELO DE NUESTRA TABLA
             tablaCliente.setModel(dtm);
             cargaArchivo.close();
         } catch (FileNotFoundException ex) {
@@ -126,15 +145,21 @@ public class Facturar extends javax.swing.JFrame {
         }
 
     }
-
+//mETOD PARA CARGAR LOS PRODEUCTOS
     private void cargarProductos() {
+        
+        //CREAMOS VARIABLES PARA RECIBIR LOS VALORES
         String linea, nombre;;
         int cantidad, ram, disco, procesador;
         double precioU;
         String sistemaO, marca;
+           //USAMOS UNA VARIABLE TIPO SCANNER
         Scanner cargaArchivo;
+        //ENCERRAMOS EN UN TRY-CATCH PARA CAPTURA CUALQUIER POSIBLE ERROR
         try {
+            //cON LA AYUDA DE NUESTRA VARIABLE DE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Productos.csv"));
+             //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -146,18 +171,22 @@ public class Facturar extends javax.swing.JFrame {
                 disco = Integer.parseInt(tokens[5]);
                 marca = tokens[6];
                 procesador = Integer.parseInt(tokens[7]);
+                   // LE AÑADIMOS A NUESTRO ARRAYLYST NUESTRO NUEVQ COMPUTADORA O PRODUCTO
                 catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
 
             }
+            //CERRAMOS NUESTRO ARCHIVO
             cargaArchivo.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Facturar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-
+//METODO PARA LLENAR NUESTRA TABLAS
     private void llenarTabla() {
+        //CRESMOA UN OBJETO DE TIPO DEFAULTTABLEMODEL PARA PODER DARLE UN MODELO A NUESTRA TABLAcLIENTES
         DefaultTableModel dtm = new DefaultTableModel();
+        //AÑADIMOS A NUESTRA TABLA LAS COLUMNAS CON SU RESPECTIVO NOBRE
         dtm.addColumn("Nombre Producto");
         dtm.addColumn("Precio");
         dtm.addColumn("Cantidad");
@@ -166,7 +195,9 @@ public class Facturar extends javax.swing.JFrame {
         dtm.addColumn("Disco gb");
         dtm.addColumn("Marca");
         dtm.addColumn("Procesador Core i");
+         //cREAMOS UN ARREGLO CON DE TAMAÑO DEL NUMERO DE COLUMNAS
         Object fila[] = new Object[dtm.getColumnCount()];
+        //USAMOS UN FOR PARA RECORRER TODO NUESTRO ARRAYLIST
         for (int i = 0; i < catalogo.size(); i++) {
             fila[0] = catalogo.get(i).getNombre();
             fila[1] = catalogo.get(i).getPrecioUnit();
@@ -178,21 +209,24 @@ public class Facturar extends javax.swing.JFrame {
                 fila[5] = ((Computadoras) prod).getDisco();
                 fila[6] = ((Computadoras) prod).getMarca();
                 fila[7] = ((Computadoras) prod).getProcesador();
-
+                //Y PARA ASIGNARLOS A LOS VALORES EN CADA DILA DE LA TABLA
             }
+            //AÑADIMOS NUESTRAS FILAS
             dtm.addRow(fila);
         }
+        //ESTABLECMOS EL MODELO DE LA TABLA
         tablaProducto.setModel(dtm);
     }
 
     public Facturar() {
         
         initComponents();
-        
+        //lLAMALOS A NUESTRO METODO 
        cargarRegistros();
         cargarProductos();
         llenarTablaCliente();
         llenarTabla();
+        //iNICIALIAZMOS NUESTRA VARIBLE DE TIPO DOUBLE
         total = 0;
         sub_total = 0;
         iva = 0;
@@ -260,7 +294,6 @@ public class Facturar extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         txtDirFac = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         lbltelefono = new javax.swing.JLabel();
         lblRuc = new javax.swing.JLabel();
@@ -700,25 +733,15 @@ public class Facturar extends javax.swing.JFrame {
         txtDirFac.setBorder(null);
         Recibo.add(txtDirFac, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 270, 30));
 
-        jButton8.setText("GRABAR");
-
         javax.swing.GroupLayout FacturacionLayout = new javax.swing.GroupLayout(Facturacion.getContentPane());
         Facturacion.getContentPane().setLayout(FacturacionLayout);
         FacturacionLayout.setHorizontalGroup(
             FacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Recibo, javax.swing.GroupLayout.DEFAULT_SIZE, 946, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FacturacionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton8)
-                .addGap(158, 158, 158))
         );
         FacturacionLayout.setVerticalGroup(
             FacturacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FacturacionLayout.createSequentialGroup()
-                .addComponent(Recibo, javax.swing.GroupLayout.PREFERRED_SIZE, 836, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton8)
-                .addGap(0, 13, Short.MAX_VALUE))
+            .addComponent(Recibo, javax.swing.GroupLayout.PREFERRED_SIZE, 836, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -904,24 +927,29 @@ public class Facturar extends javax.swing.JFrame {
     }//GEN-LAST:event_txtClienteAActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-    // TODO add your handling code here:
+    //LLAMAMOS A NUESTRO METOD RESGITRACLIENTE
     op.registrarCliente(PersonalEmp);
+    //cREMOS EL REGISTRO
     crearRegistros();
+    //y VOLMENOS A LLENAR NUESTRA TABLA
     llenarTablaCliente();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnBuscarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClientesActionPerformed
         // TODO add your handling code here:
-        Cliente.setSize(900, 650);
-        Cliente.setLocationRelativeTo(null);
-        Cliente.setModal(true);
-        Cliente.setVisible(true);
+        //CREMOS UN VENTANTA CON SIG CATERECTERISTICA
+        Cliente.setSize(900, 650);//TAMAÑO
+        Cliente.setLocationRelativeTo(null);//LUGAR DE UBICACION EN LA PANTALL
+        Cliente.setModal(true);//EL MODELO QUE VA TENER
+        Cliente.setVisible(true);//LA PONEMOS VISIBLE
 
     }//GEN-LAST:event_btnBuscarClientesActionPerformed
-
+// EVENTO DE LA TABLA SELECCIONADA
     private void tablaClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClienteMouseClicked
         // TODO add your handling code here:
+        //cREAMOS UN VARIBALE DE TIPO INT PARA SABER EN Q FILA ESTA SELECCIONADA
         int selection = tablaCliente.rowAtPoint(evt.getPoint());
+        //CON LA ATUDA DE NUESTRA VARIABLE INT MANDAMOS LOS DATOS DE LA FILA SELECCIONADA A LOS TXT
         txtNomb.setText(String.valueOf(tablaCliente.getValueAt(selection, 0)));
         txtApellido.setText(String.valueOf(tablaCliente.getValueAt(selection, 1)));
         txtCedula.setText(String.valueOf(tablaCliente.getValueAt(selection, 2)));
@@ -929,23 +957,28 @@ public class Facturar extends javax.swing.JFrame {
         txtTelefono.setText(String.valueOf(tablaCliente.getValueAt(selection, 4)));
 
     }//GEN-LAST:event_tablaClienteMouseClicked
-
+//BOTON AGREGAR CLIENTES A LA REGISTOR DE VENTA
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-
+//CON UNA VARIBLE INT VEMOS SI ALGUNA FILA ESTA SELECIONADA
         int fsl = tablaCliente.getSelectedRow();
+        //eNCERRAMOS EN UN TRY -CATCH PARA CAPTURA CUALQUIER POSIBLE ERROR Q SE NOS GENERE
         try {
+            //cREMOS VARIBLES PARA RECIBRI LOS VALORES DE LA TABLA
             String nombre, apellido, direccion, cedula, telefono;
+            //EN CASO DE QUE NO ESTE SELECCIONADA 
             if (fsl == -1) {
+                //MANDAMOS UN MENSAJE DE ERRR
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un CLIENTE", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else {
+            } else {// EN CASO CONTRARIO
                 m = (DefaultTableModel) tablaCliente.getModel();
+                //cAPTURAMOS LAS VALORES QUE CONTIENE EN ESA FILA EN LA DIFERENTES VARIABLE
                 apellido = tablaCliente.getValueAt(fsl, 1).toString();
                 cedula = tablaCliente.getValueAt(fsl, 2).toString();
                 direccion = tablaCliente.getValueAt(fsl, 3).toString();
                 nombre = tablaCliente.getValueAt(fsl, 0).toString();
                 telefono = tablaCliente.getValueAt(fsl, 4).toString();
-
+                //lE ESTABLECEMOS A NUESTROS TXT  LOS VALORESD LA VARIBLES
                 txtClienteN.setText(nombre);
                 txtClienteA.setText(apellido);
                 txtRuc.setText(cedula);
@@ -953,29 +986,32 @@ public class Facturar extends javax.swing.JFrame {
                 txtTelef.setText(telefono);
 
             }
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
         }
 
     }//GEN-LAST:event_btnAgregarActionPerformed
-
+    //AGREGAR PRODUCTOS A LA TABLA DE VENTA
     private void btnAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPActionPerformed
         // TODO add your handling code here:
+        //CON UNA VARIBLE INT VEMOS SI ALGUNA FILA ESTA SELECIONADA
         int fsl = tablaProducto.getSelectedRow();
+          //eNCERRAMOS EN UN TRY -CATCH PARA CAPTURA CUALQUIER POSIBLE ERROR Q SE NOS GENERE
         try {
+            //CREMOS VARIBALE SPARA RECIBIR LOS VALORES DE LA TABLA
             String nombre, precio, cant, paga;
             double calcula, x, ivas = 0.0;
-
+            //vERIFICAMOS QUE ESTE SELECIONADA ALGUNA FILA DE LA TABLA
             if (fsl == -1) {
+                //PRESENTAMOS UN MENSAJE DE ERROR EN CASO DE Q NO ESTE SELCIONAD
                 JOptionPane.showMessageDialog(null, "Debe seleccionar un PRODUCTO", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else {
-
+            } else {// EN CASO DE QUE ESETE SELECCIONDA
+                //LE AGREGAMOS A NUESTRA VARIBLE  CANT LA CANTIDA QUE NOS PIDE EL USUARIO
                 cant = txtCant.getText();
-                Operaciones op = new Operaciones();
-                //op.venderProducto(catalogo, fsl, Integer.parseInt(cant));
-                if (op.venderProducto(catalogo, fsl, Integer.parseInt(cant))) {
-                     precio = String.valueOf( op.Modificar(catalogo, fsl));
-        
             
+                //USMAOS A IF CON EL METODO VENDER PRODUCTO QUE NOS DEVUELVE UN VALOR BOOLEAM
+                if (op.venderProducto(catalogo, fsl, Integer.parseInt(cant))) {//EN CASO DE QUE SEA TRUE
+                    //rEALIZA LAS SIGUIENTES OPERACIONES
+                     precio = String.valueOf( op.Modificar(catalogo, fsl));
                     llenarTabla();
                     m = (DefaultTableModel) tablaProducto.getModel();
                     nombre = tablaProducto.getValueAt(fsl, 0).toString();
@@ -1008,7 +1044,7 @@ public class Facturar extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnAgregarPActionPerformed
-
+//bOTON PARA GENERA LA VENTA DE BUSQUEDA DE PRODUCTOS
     private void btnBuscarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProductosActionPerformed
         // TODO add your handling code here:
 
@@ -1018,7 +1054,7 @@ public class Facturar extends javax.swing.JFrame {
         Producto.setVisible(true);
 
     }//GEN-LAST:event_btnBuscarProductosActionPerformed
-
+//BOTON PARA GENERAR LA FACTURA
     private void btnGenerarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFacturaActionPerformed
         // TODO add your handling code here:
         Facturacion.setVisible(true);
@@ -1111,7 +1147,6 @@ public class Facturar extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarProductos;
     private javax.swing.JButton btnGenerarFactura;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JButton jButton8;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

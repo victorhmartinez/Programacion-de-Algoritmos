@@ -11,35 +11,45 @@ public class Inicio extends javax.swing.JFrame {
 
     String Carpeta = "C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Programacio_de_Algoritmos\\src\\proyectoprogramaciondealgoritmo\\";
     File crear_Carpeta = new File(Carpeta);
-
+    //iNSTANCIAMOS NUESTRA CLASE OPERACIONES DONDE TENEMOSNUESTROS METODOS
     Operaciones op = new Operaciones();
+    //CREAMOS DOS ARRAYLIST PARA GUARDA NUESTROS PRODUECTOS Y PERSONAL
     public static ArrayList<Personal> PersonalEmp = new ArrayList<Personal>();
     public static ArrayList<Producto> catalogo = new ArrayList<Producto>();
-        public void cargarVentas (){
-    Scanner leerArchivo;
+
+    //METODO CARGAvENTA PARA MOSTAR EL VALOR DE LAS VENTAS QUE HEMOS TENIDO
+    public void cargarVentas() {
+        //CREAMOS UNA VARIABLE DE TIPO SCANNER
+        Scanner leerArchivo;
+        //ENCERRAMOS EN UN TRY-CATCH PARA CAPTURAR CUALQUIER POSIBLE ERROR
         try {
-            leerArchivo= new Scanner(new File(Carpeta + "Valor_Caja.csv"));
-            String linea ;
-            double caja=0;
-          
-                linea = leerArchivo.nextLine();
-                String[] tokens = linea.split(",");
-                caja=Double.parseDouble(tokens[0]);
-                
-        
-            JOptionPane.showMessageDialog(null, "El valor de la caja es de :"+caja,"Valor Caja",JOptionPane.OK_OPTION);
+            //CON LA AYUDA DE NUESZRA VARIABLDE TIPO SCANNER LEEMOS EL ARCHIVO
+            leerArchivo = new Scanner(new File(Carpeta + "Valor_Caja.csv"));
+            String linea;
+            double caja = 0;
+            //USAMOS UN SPLIT PARA IGNORAR LA COMA Y SOLO COGER LOS VALORES Q NOS INTERESAN
+            linea = leerArchivo.nextLine();
+            String[] tokens = linea.split(",");
+            caja = Double.parseDouble(tokens[0]);
+
+            JOptionPane.showMessageDialog(null, "El valor de la caja es de :" + caja, "Valor Caja", JOptionPane.OK_OPTION);
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se puedo leer las ventas");
         }
-}
+    }
 
-    public  void crearRegistros() {
+    public void crearRegistros() {
+        //CREAMOS TRES VARIABLES DE TIPO FORMAT PARA CREAR NUESTROS ARCHVOS
         Formatter archivoPers, archivoClientes, archivoProductos;
+        //ENCERRAMOS UN TRY-CATH PARA CAPTURA CUALQUIER EERO QUE SE PUEDA PRODUCIR
         try {
+            //CON LA AYUDA DE NUESTRA VARIABLE FORMAT CREAMOS LOS ARCHVISO
             archivoPers = new Formatter(Carpeta + "Registro_Empleados.csv");
             archivoClientes = new Formatter(Carpeta + "Registro_Cliente.csv");
+            //MEDIANTE UN FOR RECORREMOS NUESTROS ARRAYLIST 
             for (int i = 0; i < PersonalEmp.size(); i++) {
                 Personal pers = PersonalEmp.get(i);
+                //ESCRIBIMOS EN NUESTRO ARCHIVO CON LOS PARAMETROS QUE TIENE NUESTRO ARRAYLIST
                 if (pers instanceof Empleado) {
                     archivoPers.format("%s,%s,%s,%s,%s,%s,%s,%f\r\n", PersonalEmp.get(i).getNombre(), PersonalEmp.get(i).getApellido(),
                             PersonalEmp.get(i).getCedula(), PersonalEmp.get(i).getCorreo(), PersonalEmp.get(i).getTelefono(),
@@ -51,34 +61,41 @@ public class Inicio extends javax.swing.JFrame {
                 }
             }
             JOptionPane.showMessageDialog(null, " Registrado Correctamente");
+            //CERRAMOS NUESTRO ARCHIVOS PARA QUE PUEDAN GUARDA LOS DATOS INGRESADOS
             archivoClientes.close();
             archivoPers.close();
+            //CON LA AYUDA DE NUESTRA VARIABLE FORMAT CREAMOS LOS ARCHVISO
             archivoProductos = new Formatter(Carpeta + "Registro_Productos.csv");
+            //MEDIANTE UN FOR RECORREMOS NUESTROS ARRAYLIST 
             for (int i = 0; i < catalogo.size(); i++) {
                 Producto prod = catalogo.get(i);
+                //ESCRIBIMOS EN NUESTRO ARCHIVO CON LOS PARAMETROS QUE TIENE NUESTRO ARRAYLIST
                 if (prod instanceof Computadoras) {
                     archivoProductos.format("%s,%f,%d,%d,%s,%d,%s,%d\r\n", catalogo.get(i).getNombre(), catalogo.get(i).getPrecioUnit(), catalogo.get(i).getCantStock(),
-                             ((Computadoras) prod).getRam(), ((Computadoras) prod).getSistemaO(), ((Computadoras) prod).getDisco(), ((Computadoras) prod).getMarca(),
+                            ((Computadoras) prod).getRam(), ((Computadoras) prod).getSistemaO(), ((Computadoras) prod).getDisco(), ((Computadoras) prod).getMarca(),
                             ((Computadoras) prod).getProcesador());
                 }
             }
+            //CERRAMOS NUESTRO ARCHIVOS PARA QUE PUEDAN GUARDA LOS DATOS INGRESADOS
             archivoProductos.close();
 
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "No se Encontro el registro", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+//METODO CARGARREGISTROS PARA MOSTRAR EL PESRSONAL , CLIENTES Y PRODUCTOS  QUE HEMOS REGISTRADO
 
     public void cargarRegistros() {
-
+        //USAMOS UNA VARIABLE TIPO SCANNER
         Scanner cargaArchivo;
+        //CREAMOS VARIABLES PARA RECIBIR LOS VALORES
         String linea, nombre, apellido, cedula, telefono, correo, cargo, celular;
         double sueldo;
-
+        //ENCERRAMOS EN UN TRY-CATCH PARA CAPTURA CUALQUIER POSIBLE ERROR
         try {
-
+            //cON LA AYUDA DE NUESTRA VARIABLE DE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Empleados.csv"));
-
+            //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -90,12 +107,13 @@ public class Inicio extends javax.swing.JFrame {
                 celular = tokens[5];
                 cargo = tokens[6];
                 sueldo = Double.parseDouble(tokens[7]);
-
+                // LE AÑADIMOS A NUESTRO ARRAYLYST NUESTRO NUEVO EMPLEADO 
                 PersonalEmp.add(new Empleado(sueldo, cargo, cedula, nombre, apellido, telefono, correo, celular));
 
             }
+            //cON LA AYUDA DE NUESTRA VARIABLE DE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Cliente.csv"));
-
+            //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -105,13 +123,16 @@ public class Inicio extends javax.swing.JFrame {
                 correo = tokens[3];
                 telefono = tokens[4];
                 celular = tokens[5];
+                // LE AÑADIMOS A NUESTRO ARRAYLYST NUESTRO NUEVO CLIENTE
                 PersonalEmp.add(new Cliente(cedula, nombre, apellido, telefono, correo, celular));
 
             }
             int cantidad, ram, disco, procesador;
             double precioU;
             String sistemaO, marca;
+            //cON LA AYUDA DE NUESTRA VARIABLE DE TIPO SCANNER LEEMOS EL ARCHIVO
             cargaArchivo = new Scanner(new File(Carpeta + "Registro_Productos.csv"));
+            //USAMOS UN WHULE PARA RECORRER Y LERR TDO LO QUE ESTA ESCRTIO EN NUESTRO ARCHIVO
             while (cargaArchivo.hasNext()) {
                 linea = cargaArchivo.nextLine();
                 String[] tokens = linea.split(",");
@@ -123,10 +144,12 @@ public class Inicio extends javax.swing.JFrame {
                 disco = Integer.parseInt(tokens[5]);
                 marca = tokens[6];
                 procesador = Integer.parseInt(tokens[7]);
+                 // LE AÑADIMOS A NUESTRO ARRAYLYST NUESTRO NUEVO CLIENTE
                 catalogo.add(new Computadoras(ram, sistemaO, disco, marca, procesador, nombre, precioU, cantidad));
 
             }
             cargaArchivo.close();
+            //CERRAMOS NUESTRO ARCHIVO
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error archivo no encontrado", "Archivo no encontrado", JOptionPane.ERROR_MESSAGE);
         }
@@ -328,19 +351,21 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
 
-        //Se llama al metodo venerProducto.
+        //Se llama a  la ventana Factura.
         Facturar f = new Facturar();
         f.setVisible(true);
 
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnMosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosEmpleadosActionPerformed
+       //Se llama a la ventana mostrarPersonal
         Mostrar_Personal mPersonal = new Mostrar_Personal();
         mPersonal.setVisible(true);
 
     }//GEN-LAST:event_btnMosEmpleadosActionPerformed
 
     private void btnMosClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosClientesActionPerformed
+        //Se llama a la venta mostrar cleinetes
         Mostrar_Cliente mc = new Mostrar_Cliente();
         mc.setVisible(true);
 
@@ -348,6 +373,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMosClientesActionPerformed
 
     private void btnMosProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosProductoActionPerformed
+       //Se llama a la venta mostrar Productos
         Mostrar_Productos mp = new Mostrar_Productos();
         mp.setVisible(true);
 
@@ -355,12 +381,13 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMosProductoActionPerformed
 
     private void btnRegisProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisProductoActionPerformed
+      //Llamamos al metodo registar productos
         op.registrarProductos(catalogo);
         crearRegistros();
     }//GEN-LAST:event_btnRegisProductoActionPerformed
 
     private void btnValorCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValorCajaActionPerformed
-  cargarVentas();
+        cargarVentas();
     }//GEN-LAST:event_btnValorCajaActionPerformed
 
     /**
